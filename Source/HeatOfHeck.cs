@@ -10,7 +10,7 @@ using Nyxpiri.ULTRAKILL.NyxLib;
 namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 {
     [HarmonyPatch(typeof(Revolver), "Update")]
-    static class DemandingHellPlayerRevolverPatch
+    static class PlayerRevolverPatch
     {
         private static FieldInfo twirlLevelFi = typeof(Revolver).GetField("twirlLevel", BindingFlags.Instance | BindingFlags.NonPublic);
         public static void Prefix(Revolver __instance)
@@ -134,60 +134,60 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             {
                 case StyleRanks.Null:
                 case StyleRanks.Destructive:
-                    explosiveSizeBase = Options.DemandingHellDestructiveHeatResExplosiveSizeBase.Value;
-                    explosiveSizeNormMin = Options.DemandingHellDestructiveHeatResExplosiveSizeNormMin.Value;
-                    explosiveSizeNormMax = Options.DemandingHellDestructiveHeatResExplosiveSizeNormMax.Value;
-                    explosiveDmgScalar = Options.DemandingHellDestructiveHeatResExplosiveDmgScalar.Value;
-                    explosiveDamagePlayer = Options.DemandingHellDestructiveHeatResExplosiveDmgPlayer.Value;
+                    explosiveSizeBase = Options.DestructiveHeatResExplosiveSizeBase.Value;
+                    explosiveSizeNormMin = Options.DestructiveHeatResExplosiveSizeNormMin.Value;
+                    explosiveSizeNormMax = Options.DestructiveHeatResExplosiveSizeNormMax.Value;
+                    explosiveDmgScalar = Options.DestructiveHeatResExplosiveDmgScalar.Value;
+                    explosiveDamagePlayer = Options.DestructiveHeatResExplosiveDmgPlayer.Value;
                     break;
                 case StyleRanks.Chaotic:
-                    explosiveSizeBase = Options.DemandingHellChaoticHeatResExplosiveSizeBase.Value;
-                    explosiveSizeNormMin = Options.DemandingHellChaoticHeatResExplosiveSizeNormMin.Value;
-                    explosiveSizeNormMax = Options.DemandingHellChaoticHeatResExplosiveSizeNormMax.Value;
-                    explosiveDmgScalar = Options.DemandingHellChaoticHeatResExplosiveDmgScalar.Value;
-                    explosiveDamagePlayer = Options.DemandingHellChaoticHeatResExplosiveDmgPlayer.Value;
+                    explosiveSizeBase = Options.ChaoticHeatResExplosiveSizeBase.Value;
+                    explosiveSizeNormMin = Options.ChaoticHeatResExplosiveSizeNormMin.Value;
+                    explosiveSizeNormMax = Options.ChaoticHeatResExplosiveSizeNormMax.Value;
+                    explosiveDmgScalar = Options.ChaoticHeatResExplosiveDmgScalar.Value;
+                    explosiveDamagePlayer = Options.ChaoticHeatResExplosiveDmgPlayer.Value;
                     break;
                 case StyleRanks.Brutal:
-                    explosiveSizeBase = Options.DemandingHellBrutalHeatResExplosiveSizeBase.Value;
-                    explosiveSizeNormMin = Options.DemandingHellBrutalHeatResExplosiveSizeNormMin.Value;
-                    explosiveSizeNormMax = Options.DemandingHellBrutalHeatResExplosiveSizeNormMax.Value;
-                    explosiveDmgScalar = Options.DemandingHellBrutalHeatResExplosiveDmgScalar.Value;
-                    explosiveDamagePlayer = Options.DemandingHellBrutalHeatResExplosiveDmgPlayer.Value;
+                    explosiveSizeBase = Options.BrutalHeatResExplosiveSizeBase.Value;
+                    explosiveSizeNormMin = Options.BrutalHeatResExplosiveSizeNormMin.Value;
+                    explosiveSizeNormMax = Options.BrutalHeatResExplosiveSizeNormMax.Value;
+                    explosiveDmgScalar = Options.BrutalHeatResExplosiveDmgScalar.Value;
+                    explosiveDamagePlayer = Options.BrutalHeatResExplosiveDmgPlayer.Value;
                     break;
                 case StyleRanks.Anarchic:
-                    explosiveSizeBase = Options.DemandingHellAnarchicHeatResExplosiveSizeBase.Value;
-                    explosiveSizeNormMin = Options.DemandingHellAnarchicHeatResExplosiveSizeNormMin.Value;
-                    explosiveSizeNormMax = Options.DemandingHellAnarchicHeatResExplosiveSizeNormMax.Value;
-                    explosiveDmgScalar = Options.DemandingHellAnarchicHeatResExplosiveDmgScalar.Value;
-                    explosiveDamagePlayer = Options.DemandingHellAnarchicHeatResExplosiveDmgPlayer.Value;
+                    explosiveSizeBase = Options.AnarchicHeatResExplosiveSizeBase.Value;
+                    explosiveSizeNormMin = Options.AnarchicHeatResExplosiveSizeNormMin.Value;
+                    explosiveSizeNormMax = Options.AnarchicHeatResExplosiveSizeNormMax.Value;
+                    explosiveDmgScalar = Options.AnarchicHeatResExplosiveDmgScalar.Value;
+                    explosiveDamagePlayer = Options.AnarchicHeatResExplosiveDmgPlayer.Value;
                     break;
                 case StyleRanks.Supreme:
-                    explosiveSizeBase = Options.DemandingHellAnarchicHeatResExplosiveSizeBase.Value;
-                    explosiveSizeNormMin = Options.DemandingHellSupremeHeatResExplosiveSizeNormMin.Value;
-                    explosiveSizeNormMax = Options.DemandingHellSupremeHeatResExplosiveSizeNormMax.Value;
-                    explosiveDmgScalar = Options.DemandingHellSupremeHeatResExplosiveDmgScalar.Value;
-                    explosiveDamagePlayer = Options.DemandingHellSupremeHeatResExplosiveDmgPlayer.Value;
+                    explosiveSizeBase = Options.AnarchicHeatResExplosiveSizeBase.Value;
+                    explosiveSizeNormMin = Options.SupremeHeatResExplosiveSizeNormMin.Value;
+                    explosiveSizeNormMax = Options.SupremeHeatResExplosiveSizeNormMax.Value;
+                    explosiveDmgScalar = Options.SupremeHeatResExplosiveDmgScalar.Value;
+                    explosiveDamagePlayer = Options.SupremeHeatResExplosiveDmgPlayer.Value;
                     break;
                 case StyleRanks.SSadistic:
-                    explosiveSizeBase = Options.DemandingHellSSadisticHeatResExplosiveSizeBase.Value;
-                    explosiveSizeNormMin = Options.DemandingHellSSadisticHeatResExplosiveSizeNormMin.Value;
-                    explosiveSizeNormMax = Options.DemandingHellSSadisticHeatResExplosiveSizeNormMax.Value;
-                    explosiveDmgScalar = Options.DemandingHellSSadisticHeatResExplosiveDmgScalar.Value;
-                    explosiveDamagePlayer = Options.DemandingHellSSadisticHeatResExplosiveDmgPlayer.Value;
+                    explosiveSizeBase = Options.SSadisticHeatResExplosiveSizeBase.Value;
+                    explosiveSizeNormMin = Options.SSadisticHeatResExplosiveSizeNormMin.Value;
+                    explosiveSizeNormMax = Options.SSadisticHeatResExplosiveSizeNormMax.Value;
+                    explosiveDmgScalar = Options.SSadisticHeatResExplosiveDmgScalar.Value;
+                    explosiveDamagePlayer = Options.SSadisticHeatResExplosiveDmgPlayer.Value;
                     break;
                 case StyleRanks.SSSensoredStorm:
-                    explosiveSizeBase = Options.DemandingHellSSSensoredStormHeatResExplosiveSizeBase.Value;
-                    explosiveSizeNormMin = Options.DemandingHellSSSensoredStormHeatResExplosiveSizeNormMin.Value;
-                    explosiveSizeNormMax = Options.DemandingHellSSSensoredStormHeatResExplosiveSizeNormMax.Value;
-                    explosiveDmgScalar = Options.DemandingHellSSSensoredStormHeatResExplosiveDmgScalar.Value;
-                    explosiveDamagePlayer = Options.DemandingHellSSSensoredStormHeatResExplosiveDmgPlayer.Value;
+                    explosiveSizeBase = Options.SSSensoredStormHeatResExplosiveSizeBase.Value;
+                    explosiveSizeNormMin = Options.SSSensoredStormHeatResExplosiveSizeNormMin.Value;
+                    explosiveSizeNormMax = Options.SSSensoredStormHeatResExplosiveSizeNormMax.Value;
+                    explosiveDmgScalar = Options.SSSensoredStormHeatResExplosiveDmgScalar.Value;
+                    explosiveDamagePlayer = Options.SSSensoredStormHeatResExplosiveDmgPlayer.Value;
                     break;
                 case StyleRanks.ULTRAKILL:
-                    explosiveSizeBase = Options.DemandingHellULTRAKILLHeatResExplosiveSizeBase.Value;
-                    explosiveSizeNormMin = Options.DemandingHellULTRAKILLHeatResExplosiveSizeNormMin.Value;
-                    explosiveSizeNormMax = Options.DemandingHellULTRAKILLHeatResExplosiveSizeNormMax.Value;
-                    explosiveDmgScalar = Options.DemandingHellULTRAKILLHeatResExplosiveDmgScalar.Value;
-                    explosiveDamagePlayer = Options.DemandingHellULTRAKILLHeatResExplosiveDmgPlayer.Value;
+                    explosiveSizeBase = Options.ULTRAKILLHeatResExplosiveSizeBase.Value;
+                    explosiveSizeNormMin = Options.ULTRAKILLHeatResExplosiveSizeNormMin.Value;
+                    explosiveSizeNormMax = Options.ULTRAKILLHeatResExplosiveSizeNormMax.Value;
+                    explosiveDmgScalar = Options.ULTRAKILLHeatResExplosiveDmgScalar.Value;
+                    explosiveDamagePlayer = Options.ULTRAKILLHeatResExplosiveDmgPlayer.Value;
                     break;
             }
 
@@ -508,36 +508,36 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 {
                     case StyleRanks.Null:
                     case StyleRanks.Destructive:
-                        heatResistanceRecovery *= Options.DemandingHellDestructiveHeatResRecoveryEntry.Value;
-                        HeatResistanceDrain = Options.DemandingHellDestructiveHeatResDrainEntry.Value;
+                        heatResistanceRecovery *= Options.DestructiveHeatResRecoveryEntry.Value;
+                        HeatResistanceDrain = Options.DestructiveHeatResDrainEntry.Value;
                         break;
                     case StyleRanks.Chaotic:
-                        heatResistanceRecovery *= Options.DemandingHellChaoticHeatResRecoveryEntry.Value;
-                        HeatResistanceDrain = Options.DemandingHellChaoticHeatResDrainEntry.Value;
+                        heatResistanceRecovery *= Options.ChaoticHeatResRecoveryEntry.Value;
+                        HeatResistanceDrain = Options.ChaoticHeatResDrainEntry.Value;
                         break;
                     case StyleRanks.Brutal:
-                        heatResistanceRecovery *= Options.DemandingHellBrutalHeatResRecoveryEntry.Value;
-                        HeatResistanceDrain = Options.DemandingHellBrutalHeatResDrainEntry.Value;
+                        heatResistanceRecovery *= Options.BrutalHeatResRecoveryEntry.Value;
+                        HeatResistanceDrain = Options.BrutalHeatResDrainEntry.Value;
                         break;
                     case StyleRanks.Anarchic:
-                        heatResistanceRecovery *= Options.DemandingHellAnarchicHeatResRecoveryEntry.Value;
-                        HeatResistanceDrain = Options.DemandingHellAnarchicHeatResDrainEntry.Value;
+                        heatResistanceRecovery *= Options.AnarchicHeatResRecoveryEntry.Value;
+                        HeatResistanceDrain = Options.AnarchicHeatResDrainEntry.Value;
                         break;
                     case StyleRanks.Supreme:
-                        heatResistanceRecovery *= Options.DemandingHellSupremeHeatResRecoveryEntry.Value;
-                        HeatResistanceDrain = Options.DemandingHellSupremeHeatResDrainEntry.Value;
+                        heatResistanceRecovery *= Options.SupremeHeatResRecoveryEntry.Value;
+                        HeatResistanceDrain = Options.SupremeHeatResDrainEntry.Value;
                         break;
                     case StyleRanks.SSadistic:
-                        heatResistanceRecovery *= Options.DemandingHellSSadisticHeatResRecoveryEntry.Value;
-                        HeatResistanceDrain = Options.DemandingHellSSadisticHeatResDrainEntry.Value;
+                        heatResistanceRecovery *= Options.SSadisticHeatResRecoveryEntry.Value;
+                        HeatResistanceDrain = Options.SSadisticHeatResDrainEntry.Value;
                         break;
                     case StyleRanks.SSSensoredStorm:
-                        heatResistanceRecovery *= Options.DemandingHellSSSensoredStormHeatResRecoveryEntry.Value;
-                        HeatResistanceDrain = Options.DemandingHellSSSensoredStormHeatResDrainEntry.Value;
+                        heatResistanceRecovery *= Options.SSSensoredStormHeatResRecoveryEntry.Value;
+                        HeatResistanceDrain = Options.SSSensoredStormHeatResDrainEntry.Value;
                         break;
                     case StyleRanks.ULTRAKILL:
-                        heatResistanceRecovery *= Options.DemandingHellULTRAKILLHeatResRecoveryEntry.Value;
-                        HeatResistanceDrain = Options.DemandingHellULTRAKILLHeatResDrainEntry.Value;
+                        heatResistanceRecovery *= Options.ULTRAKILLHeatResRecoveryEntry.Value;
+                        HeatResistanceDrain = Options.ULTRAKILLHeatResDrainEntry.Value;
                         break;
                 }
 
