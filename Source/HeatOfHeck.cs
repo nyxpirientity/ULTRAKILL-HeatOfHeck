@@ -23,15 +23,40 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
         }
     }
 
+    public static class HeatOfHeckHeckExtension
+    {
+        public static HeatOfHeck GetHeatOfHeck(this Heck heck)
+        {
+            return heck.GetMonoByIndex<HeatOfHeck>(HeatOfHeck.MonoRegistrarIdx);
+        }
+    }
+
     public class HeatOfHeck : MonoBehaviour
     {
         public static float RevolverTwirlThisUpdate = 0.0f;
         public NewMovement player { get; private set; } = null;
         public StyleHUD Shud { get; private set; } = null;
 
+        public TextMeshProUGUI OurHeatResistanceFlavourText { get; private set; }
+        public TextMeshProUGUI HeatResLabel { get; private set; }
+        public TextMeshProUGUI HeatRestPercentage { get; private set; }
+        public TextMeshProUGUI HeatResFlashingText { get; private set; }
+        public Image ScreenShatterImage { get; private set; }
+        public float DefaultHurtingSoundPitch { get; private set; }
+        public Vector3 BasePosition { get; private set; }
+        public Vector3 BaseScale { get; private set; }
+        public static HeatResistance OurHeatResistanceStatic = null;
+        public static HeatResistance LastEnabledHeatRes { get; set; } = null;
+        public static int MonoRegistrarIdx { get; private set; }
+        
+        internal static void Initialize()
+        {
+            MonoRegistrarIdx = Heck.MonoRegistrar.Register<HeatOfHeck>();
+        }
+
         private void EnemyPostHurt(EnemyComponents enemy, GameObject target, Vector3 force, Vector3? hitPoint, float multiplier, bool tryForExplode, float critMultiplier, GameObject sourceWeapon, bool ignoreTotalDamageTakenMultiplier, bool fromExplosion)
         {
-            if (!Cheats.IsCheatEnabled(Cheats.DemandingHell))
+            if (!NyxLib.Cheats.IsCheatEnabled(Cheats.HeatOfHeck))
             {
                 return;
             }
@@ -280,7 +305,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
         protected void OnCollisionStay(Collision collision)
         {
-            if (Cheats.IsCheatDisabled(Cheats.DemandingHell))
+            if (NyxLib.Cheats.IsCheatDisabled(Cheats.HeatOfHeck))
             {
                 return;
             }
@@ -310,7 +335,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             if (CurrentHeatResistance <= 35.0f)
             {
                 float burnStrength = NyxMath.InverseNormalizeToRange(CurrentHeatResistance, -100.0f, 40.0f);
-                eid.ApplyDamage(Vector3.Normalize(eid.transform.position - transform.position) * burnStrength * 10.0f, eid.transform.position, burnStrength * 5.0f, 0.0f, null, false);
+                eid.ApplyDamage(Vector3.Normalize(eid.transform.position - player.transform.position) * burnStrength * 10.0f, eid.transform.position, burnStrength * 5.0f, 0.0f, null, false);
                 SafeFromContactDamage.Add(eid.gameObject);
                 if (eid.Dead)
                 {
@@ -342,7 +367,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
         protected void FixedUpdate()
         {
-            if (!Cheats.IsCheatEnabled(Cheats.DemandingHell))
+            if (!NyxLib.Cheats.IsCheatEnabled(Cheats.HeatOfHeck))
             {
                 if ((OurHeatResistance?.isActiveAndEnabled).GetValueOrDefault(false))
                 {
@@ -689,7 +714,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
         protected void LateUpdate()
         {
-            if (!Cheats.IsCheatEnabled(Cheats.DemandingHell))
+            if (!NyxLib.Cheats.IsCheatEnabled(Cheats.HeatOfHeck))
             {
                 return;
             }
@@ -704,48 +729,39 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             HeatRestPercentage.text = $"{temperature:F2}°C";
         }
 
-        private void PlayerPostHurt(NewMovement player, int damage, bool invincible, float scoreLossMultiplier, bool explosion, bool instablack, float hardDamageMultiplier, bool ignoreInvincibility)
+        private void PlayerPostHurt(EventMethodCancelInfo cancelInfo, PlayerComponents player, int unprocessedDamage, int processedDamage, bool invincible, float scoreLossMultiplier, bool explosion, bool instablack, float hardDamageMultiplier, bool ignoreInvincibility)
         {
-            if (!Cheats.IsCheatEnabled(Cheats.DemandingHell))
+            if (!NyxLib.Cheats.IsCheatEnabled(Cheats.HeatOfHeck))
             {
                 return;
             }
 
-            if (damage <= 8)
+            if (processedDamage <= 8)
             {
                 return;
             }
+
+            var newMovement = player.NewMovement;
 
             if (OurHeatResistance != null && !explosion && scoreLossMultiplier > 0.0f)
             {
                 if (CurrentHeatResistance <= -50.0f)
                 {
-                    HeatResExplosion(damage * 0.25f, player.rb.transform.position, true, out float explosiveSize);
-                    player.GetHurt(Mathf.RoundToInt(damage * 0.3f), false, 0.0f, true, false, 0.35f, true);
-                    player.Launch(Vector3.up, explosiveSize * 3.0f, true);
+                    HeatResExplosion(processedDamage * 0.25f, newMovement.rb.transform.position, true, out float explosiveSize);
+                    newMovement.GetHurt(Mathf.RoundToInt(processedDamage * 0.3f), false, 0.0f, true, false, 0.35f, true);
+                    newMovement.Launch(Vector3.up, explosiveSize * 3.0f, true);
                 }
                 else if (CurrentHeatResistance <= -10.0f)
                 {
-                    HeatResExplosion(damage * 0.25f, player.rb.transform.position, true, out float explosiveSize);
-                    player.GetHurt(Mathf.RoundToInt(damage * 0.2f), false, 0.0f, true, false, 0.35f, true);
-                    player.Launch(Vector3.up, explosiveSize * 2.0f, true);
+                    HeatResExplosion(processedDamage * 0.25f, newMovement.rb.transform.position, true, out float explosiveSize);
+                    newMovement.GetHurt(Mathf.RoundToInt(processedDamage * 0.2f), false, 0.0f, true, false, 0.35f, true);
+                    newMovement.Launch(Vector3.up, explosiveSize * 2.0f, true);
                 }
             }
         }
 
         GameObject OurHeatResistanceRootGo = null;
         HeatResistance OurHeatResistance = null;
-
-        public TextMeshProUGUI OurHeatResistanceFlavourText { get; private set; }
-        public TextMeshProUGUI HeatResLabel { get; private set; }
-        public TextMeshProUGUI HeatRestPercentage { get; private set; }
-        public TextMeshProUGUI HeatResFlashingText { get; private set; }
-        public Image ScreenShatterImage { get; private set; }
-        public float DefaultHurtingSoundPitch { get; private set; }
-        public Vector3 BasePosition { get; private set; }
-        public Vector3 BaseScale { get; private set; }
-        public static HeatResistance OurHeatResistanceStatic = null;
-        public static HeatResistance LastEnabledHeatRes { get; set; } = null;
     }
 
     [HarmonyPatch(typeof(HeatResistance), "OnEnable")]
