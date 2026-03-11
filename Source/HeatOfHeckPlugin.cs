@@ -18,6 +18,8 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             Log.Initialize(Logger);
             HeatOfHeck.Initialize();
             NyxLib.Cheats.ReadyForCheatRegistration += RegisterCheats;
+            Options.Config = Config;
+            Options.Initialize();
         }
 
         private void RegisterCheats(CheatsManager cheatsManager)
@@ -34,6 +36,14 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             ), "HELL'S IMPACT");
         }
 
+        protected void OnApplicationFocus(bool hasFocus)
+        {
+            if (hasFocus)
+            {
+                Config.Reload();
+            }
+        }
+        
         protected void Start()
         {
         }
