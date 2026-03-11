@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using BepInEx.Configuration;
 
-namespace Nyxpiri.ULTRAKILL.ModName
+namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 {
     public static class Options
     {
