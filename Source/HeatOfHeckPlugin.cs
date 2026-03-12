@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using BepInEx;
 using System;
+using System.IO;
 
 namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 {
@@ -20,6 +21,10 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             NyxLib.Cheats.ReadyForCheatRegistration += RegisterCheats;
             Options.Config = Config;
             Options.Initialize();
+            if (!File.Exists(Config.ConfigFilePath))
+            {
+                Config.Save();
+            }
         }
 
         private void RegisterCheats(CheatsManager cheatsManager)
