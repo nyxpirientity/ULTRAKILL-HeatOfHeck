@@ -120,14 +120,14 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             SSadisticHeatResExplosiveDmgPlayer = Config.Bind($"{""}SSadistic", "HeatResExplosiveDmgPlayer", true);
 
             SSSensoredStormHeatResDrainEntry = Config.Bind($"{""}SSSensoredStorm", "HeatStormResDrain", 85.0f);
-            SSSensoredStormHeatResRecoveryEntry = Config.Bind($"{""}SSSensoredStorm", "HeatStormResRecovery", 1.9f);
+            SSSensoredStormHeatResRecoveryEntry = Config.Bind($"{""}SSSensoredStorm", "HeatStormResRecovery", 2.05f);
             SSSensoredStormHeatResExplosiveSizeBase = Config.Bind($"{""}SSSensoredStorm", "HeatResExplosiveSizeBase", 14.0f);
             SSSensoredStormHeatResExplosiveSizeNormMin = Config.Bind($"{""}SSSensoredStorm", "HeatResExplosiveSizeNormMin", 0.15f);
             SSSensoredStormHeatResExplosiveSizeNormMax = Config.Bind($"{""}SSSensoredStorm", "HeatResExplosiveSizeNormMax", 8.5f);
             SSSensoredStormHeatResExplosiveDmgScalar = Config.Bind($"{""}SSSensoredStorm", "HeatResExplosiveDmgScalar", 0.5f);
             SSSensoredStormHeatResExplosiveDmgPlayer = Config.Bind($"{""}SSSensoredStorm", "HeatResExplosiveDmgPlayer", true);
 
-            ULTRAKILLHeatResRecoveryEntry = Config.Bind($"{""}ULTRAKILL", "HeatResRecovery", 2.7f);
+            ULTRAKILLHeatResRecoveryEntry = Config.Bind($"{""}ULTRAKILL", "HeatResRecovery", 2.4f);
             ULTRAKILLHeatResDrainEntry = Config.Bind($"{""}ULTRAKILL", "HeatResDrain", 100.0f);
             ULTRAKILLHeatResExplosiveSizeBase = Config.Bind($"{""}ULTRAKILL", "HeatResExplosiveSizeBase", 20.0f);
             ULTRAKILLHeatResExplosiveSizeNormMin = Config.Bind($"{""}ULTRAKILL", "HeatResExplosiveSizeNormMin", 0.15f);

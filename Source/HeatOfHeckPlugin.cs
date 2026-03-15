@@ -2,6 +2,7 @@
 using BepInEx;
 using System;
 using System.IO;
+using HarmonyLib;
 
 namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 {
@@ -21,6 +22,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             NyxLib.Cheats.ReadyForCheatRegistration += RegisterCheats;
             Options.Config = Config;
             Options.Initialize();
+            Harmony.CreateAndPatchAll(GetType().Assembly);
             if (!File.Exists(Config.ConfigFilePath))
             {
                 Config.Save();
