@@ -43,7 +43,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
         public TextMeshProUGUI HeatResFlashingText { get; private set; }
         public Image ScreenShatterImage { get; private set; }
         public float DefaultHurtingSoundPitch { get; private set; }
-        public Vector3 BasePosition { get; private set; }
+        public Vector2 BasePosition { get; private set; }
         public Vector3 BaseScale { get; private set; }
         public static HeatResistance OurHeatResistanceStatic = null;
         public static HeatResistance LastEnabledHeatRes { get; set; } = null;
@@ -434,7 +434,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 ScreenShatterImage = screenShatter.Value;
                 ScreenShatterImage.transform.position += Vector3.right * 1400.0f;
                 DefaultHurtingSoundPitch = hurtingSound.Value.GetComponent<AudioSource>().pitch;
-                BasePosition = OurHeatResistance.transform.position;
+                BasePosition = OurHeatResistance.GetComponent<RectTransform>().anchoredPosition;
                 //BaseScale = OurHeatResistance.transform.localScale; WRONG because it does a scale effect when it enables lol
                 
                 //FieldInfo heatResInstanceFI = typeof(MonoSingleton<HeatResistance>).GetField("Instance", BindingFlags.Static | BindingFlags.NonPublic);
@@ -496,8 +496,11 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 {
                     pushDownFactor += 110.0f;
                 }
-
-                OurHeatResistance.transform.position = NyxMath.EaseInterpTo(OurHeatResistance.transform.position, BasePosition + Vector3.down * pushDownFactor, 10.0f, Time.fixedDeltaTime);
+                
+                pushDownFactor *= 0.7f;
+                
+                var rectTransform = OurHeatResistance.GetComponent<RectTransform>();
+                rectTransform.anchoredPosition = NyxMath.EaseInterpTo(rectTransform.anchoredPosition, BasePosition + Vector2.down * pushDownFactor, 10.0f, Time.fixedDeltaTime);
                 
                 float heatResistanceRecovery = player.rb.velocity.magnitude;
 
