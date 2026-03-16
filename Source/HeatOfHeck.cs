@@ -634,7 +634,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 
                 if (CurrentHeatResistance < -95.0f)
                 {
-                    player.ForceAntiHP((float)20.0f * Time.fixedDeltaTime, silent: true, dontOverwriteHp: false, addToCooldown: true, stopInstaHeal: true);
+                    player.ForceAntiHP((float)50.0f * Time.fixedDeltaTime, silent: true, dontOverwriteHp: false, addToCooldown: true, stopInstaHeal: true);
                     hurtingSound.Value.GetComponent<AudioSource>().pitch = DefaultHurtingSoundPitch + 0.4f + UnityEngine.Random.Range(0.0f, 0.1f);
                     switch (UnityEngine.Random.Range(0, 4))
                     {
@@ -663,7 +663,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 }
                 else if (CurrentHeatResistance < -50.0f)
                 {
-                    player.ForceAntiHP((float)15.0f * Time.fixedDeltaTime, silent: true, dontOverwriteHp: false, addToCooldown: true, stopInstaHeal: true);
+                    player.ForceAntiHP((float)35.0f * Time.fixedDeltaTime, silent: true, dontOverwriteHp: false, addToCooldown: true, stopInstaHeal: true);
                     hurtingSound.Value.GetComponent<AudioSource>().pitch = DefaultHurtingSoundPitch + 0.1f;
                     HeatResFlashingText.text = "CRITICAL";
                     HeatResRankDescensionTimer += Time.fixedDeltaTime * -1.25f;
@@ -680,6 +680,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                     hurtingSound.Value.GetComponent<AudioSource>().pitch = DefaultHurtingSoundPitch;
                     HeatResFlashingText.text = "WARNING:";
                     HeatResRankDescensionTimer += Time.fixedDeltaTime * -0.5f;
+                    player.ForceAntiHP((float)10.0f * Time.fixedDeltaTime, silent: true, dontOverwriteHp: false, addToCooldown: true, stopInstaHeal: true);
 
                     if (hasHeatResistanceThatsNotUs)
                     {
