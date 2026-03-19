@@ -11,7 +11,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
         public const string HeatOfHeck = "nyxpiri.heat-of-heck";
     }
     
-    [BepInPlugin("com.nyxpiri.bepinex.plugins.ultrakill.heat-of-heck", "Heat of Heck", "0.0.0.1")]
+    [BepInPlugin("nyxpiri.ultrakill.heat-of-heck", "Heat of Heck", "0.0.0.1")]
     [BepInProcess("ULTRAKILL.exe")]
     public class HeatOfHeckPlugin : BaseUnityPlugin
     {
