@@ -198,12 +198,12 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 return false;
             }
 
-            if (Assets.ExplosionPrefab == null)
+            if (NyxLib.Assets.ExplosionPrefab == null)
             {
                 return false;
             }
 
-            var explosionGo = UnityEngine.Object.Instantiate(Assets.ExplosionPrefab);
+            var explosionGo = UnityEngine.Object.Instantiate(NyxLib.Assets.ExplosionPrefab);
             explosionGo.transform.position = hitPoint;
             var explosion = explosionGo.GetComponentInChildren<Explosion>();
 

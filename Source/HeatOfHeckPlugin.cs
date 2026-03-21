@@ -23,6 +23,8 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             Options.Config = Config;
             Options.Initialize();
             Harmony.CreateAndPatchAll(GetType().Assembly);
+            NyxLib.Assets.EnableExplosionsPicking();
+            Assets.Initialize();
             if (!File.Exists(Config.ConfigFilePath))
             {
                 Config.Save();
