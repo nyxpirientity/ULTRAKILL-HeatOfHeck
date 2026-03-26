@@ -54,7 +54,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             MonoRegistrarIdx = Heck.MonoRegistrar.Register<HeatOfHeck>();
         }
 
-        private void EnemyPostHurt(EnemyComponents enemy, GameObject target, Vector3 force, Vector3? hitPoint, float multiplier, bool tryForExplode, float critMultiplier, GameObject sourceWeapon, bool ignoreTotalDamageTakenMultiplier, bool fromExplosion)
+        private void EnemyPostHurt(EventMethodCancelInfo cancelInfo, EnemyComponents enemy, GameObject target, Vector3 force, Vector3? hitPoint, float multiplier, bool tryForExplode, float critMultiplier, GameObject sourceWeapon, bool ignoreTotalDamageTakenMultiplier, bool fromExplosion)
         {
             if (!NyxLib.Cheats.IsCheatEnabled(Cheats.HeatOfHeck))
             {
@@ -235,7 +235,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
         protected void Start()
         {
             PlayerEvents.PostHurt += PlayerPostHurt;
-            EnemyEvents.PostHurt += EnemyPostHurt;
+            EnemyComponents.PostAnyEnemyHurt += EnemyPostHurt;
             TextMeshProUGUIEvents.PostEnable += TextMeshProEnabled;
             TextMeshProUGUIEvents.PostDisable += TextMeshProDisabled;
             player = NewMovement.Instance;
@@ -274,7 +274,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
         protected void OnDestroy()
         {
             PlayerEvents.PostHurt -= PlayerPostHurt;
-            EnemyEvents.PostHurt -= EnemyPostHurt;
+            EnemyComponents.PostAnyEnemyHurt -= EnemyPostHurt;
         }
 
         float CurrentHeatResistance = 0.0f;
