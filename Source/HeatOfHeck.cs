@@ -545,6 +545,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 }
 
                 HeatResistanceDrain = HeatResistanceDrain * ((player.touchingWaters.Count > 0) ? 0.5f : 1.0f);
+                HeatResistanceDrain *= player.fakeFallRequests > 0 ? 0.85f : 1.0f;
 
                 if (OurHeatResistance.isActiveAndEnabled && HeatResistanceDrain <= 0.0f)
                 {
