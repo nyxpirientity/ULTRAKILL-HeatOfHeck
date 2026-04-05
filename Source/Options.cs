@@ -119,8 +119,8 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             SSadisticHeatResExplosiveDmgScalar = Config.Bind($"{""}SSadistic", "HeatResExplosiveDmgScalar", 0.35f);
             SSadisticHeatResExplosiveDmgPlayer = Config.Bind($"{""}SSadistic", "HeatResExplosiveDmgPlayer", true);
 
-            SSSensoredStormHeatResDrainEntry = Config.Bind($"{""}SSSensoredStorm", "HeatStormResDrain", 85.0f);
-            SSSensoredStormHeatResRecoveryEntry = Config.Bind($"{""}SSSensoredStorm", "HeatStormResRecovery", 2.05f);
+            SSSensoredStormHeatResDrainEntry = Config.Bind($"{""}SSSensoredStorm", "HeatStormResDrain", 75.0f);
+            SSSensoredStormHeatResRecoveryEntry = Config.Bind($"{""}SSSensoredStorm", "HeatStormResRecovery", 2.1f);
             SSSensoredStormHeatResExplosiveSizeBase = Config.Bind($"{""}SSSensoredStorm", "HeatResExplosiveSizeBase", 14.0f);
             SSSensoredStormHeatResExplosiveSizeNormMin = Config.Bind($"{""}SSSensoredStorm", "HeatResExplosiveSizeNormMin", 0.15f);
             SSSensoredStormHeatResExplosiveSizeNormMax = Config.Bind($"{""}SSSensoredStorm", "HeatResExplosiveSizeNormMax", 8.5f);

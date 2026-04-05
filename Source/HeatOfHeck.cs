@@ -83,28 +83,28 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 {
                     case StyleRanks.Null:
                     case StyleRanks.Destructive:
-                    heatResExplosionLimit = 35.0f;
+                    heatResExplosionLimit = 0.0f;
                         break;
                     case StyleRanks.Chaotic:
-                    heatResExplosionLimit = 35.0f;
+                    heatResExplosionLimit = 0.0f;
                         break;
                     case StyleRanks.Brutal:
-                    heatResExplosionLimit = 35.0f;
+                    heatResExplosionLimit = 10.0f;
                         break;
                     case StyleRanks.Anarchic:
-                    heatResExplosionLimit = 35.0f;
+                    heatResExplosionLimit = 10.0f;
                         break;
                     case StyleRanks.Supreme:
-                    heatResExplosionLimit = 35.0f;
+                    heatResExplosionLimit = 15.0f;
                         break;
                     case StyleRanks.SSadistic:
-                    heatResExplosionLimit = 40.0f;
+                    heatResExplosionLimit = 15.0f;
                         break;
                     case StyleRanks.SSSensoredStorm:
-                    heatResExplosionLimit = 45.0f;
+                    heatResExplosionLimit = 17.5f;
                         break;
                     case StyleRanks.ULTRAKILL:
-                    heatResExplosionLimit = 55.0f;
+                    heatResExplosionLimit = 20.0f;
                         break;
                 }
 
