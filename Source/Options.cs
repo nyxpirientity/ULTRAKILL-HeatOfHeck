@@ -1,141 +1,191 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using BepInEx.Configuration;
+using Nyxpiri.ULTRAKILL.NyxLib;
 
 namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 {
     public static class Options
     {
-        public static ConfigEntry<float> DestructiveHeatResDrainEntry { get; private set; } = null;
-        public static ConfigEntry<float> DestructiveHeatResRecoveryEntry { get; private set; } = null;
-        public static ConfigEntry<float> DestructiveHeatResExplosiveSizeBase { get; private set; } = null;
-        public static ConfigEntry<float> DestructiveHeatResExplosiveSizeNormMin { get; private set; } = null;
-        public static ConfigEntry<float> DestructiveHeatResExplosiveSizeNormMax { get; private set; } = null;
-        public static ConfigEntry<float> DestructiveHeatResExplosiveDmgScalar { get; private set; } = null;
-        public static ConfigEntry<bool> DestructiveHeatResExplosiveDmgPlayer { get; private set; } = null;
+        public static StyleRankOptions DestructiveOptions { get; private set; } = null;
+        public static StyleRankOptions ChaoticOptions { get; private set; } = null;
+        public static StyleRankOptions BrutalOptions { get; private set; } = null;
+        public static StyleRankOptions AnarchicOptions { get; private set; } = null;
+        public static StyleRankOptions SupremeOptions { get; private set; } = null;
+        public static StyleRankOptions SSadisticOptions { get; private set; } = null;
+        public static StyleRankOptions SSSensoredStormOptions { get; private set; } = null;
+        public static StyleRankOptions ULTRAKILLOptions { get; private set; } = null;
 
-        public static ConfigEntry<float> ChaoticHeatResDrainEntry { get; private set; } = null;
-        public static ConfigEntry<float> ChaoticHeatResRecoveryEntry { get; private set; } = null;
-        public static ConfigEntry<float> ChaoticHeatResExplosiveSizeBase { get; private set; } = null;
-        public static ConfigEntry<float> ChaoticHeatResExplosiveSizeNormMin { get; private set; } = null;
-        public static ConfigEntry<float> ChaoticHeatResExplosiveSizeNormMax { get; private set; } = null;
-        public static ConfigEntry<float> ChaoticHeatResExplosiveDmgScalar { get; private set; } = null;
-        public static ConfigEntry<bool> ChaoticHeatResExplosiveDmgPlayer { get; private set; } = null;
-
-        public static ConfigEntry<float> BrutalHeatResRecoveryEntry { get; private set; } = null;
-        public static ConfigEntry<float> BrutalHeatResDrainEntry { get; private set; } = null;
-        public static ConfigEntry<float> BrutalHeatResExplosiveSizeBase { get; private set; } = null;
-        public static ConfigEntry<float> BrutalHeatResExplosiveSizeNormMin { get; private set; } = null;
-        public static ConfigEntry<float> BrutalHeatResExplosiveSizeNormMax { get; private set; } = null;
-        public static ConfigEntry<float> BrutalHeatResExplosiveDmgScalar { get; private set; } = null;
-        public static ConfigEntry<bool> BrutalHeatResExplosiveDmgPlayer { get; private set; } = null;
-
-        public static ConfigEntry<float> AnarchicHeatResDrainEntry { get; private set; } = null;
-        public static ConfigEntry<float> AnarchicHeatResRecoveryEntry { get; private set; } = null;
-        public static ConfigEntry<float> AnarchicHeatResExplosiveSizeBase { get; private set; } = null;
-        public static ConfigEntry<float> AnarchicHeatResExplosiveSizeNormMin { get; private set; } = null;
-        public static ConfigEntry<float> AnarchicHeatResExplosiveSizeNormMax { get; private set; } = null;
-        public static ConfigEntry<float> AnarchicHeatResExplosiveDmgScalar { get; private set; } = null;
-        public static ConfigEntry<bool> AnarchicHeatResExplosiveDmgPlayer { get; private set; } = null;
-
-        public static ConfigEntry<float> SupremeHeatResDrainEntry { get; private set; } = null;
-        public static ConfigEntry<float> SupremeHeatResRecoveryEntry { get; private set; } = null;
-        public static ConfigEntry<float> SupremeHeatResExplosiveSizeBase { get; private set; } = null;
-        public static ConfigEntry<float> SupremeHeatResExplosiveSizeNormMin { get; private set; } = null;
-        public static ConfigEntry<float> SupremeHeatResExplosiveSizeNormMax { get; private set; } = null;
-        public static ConfigEntry<float> SupremeHeatResExplosiveDmgScalar { get; private set; } = null;
-        public static ConfigEntry<bool> SupremeHeatResExplosiveDmgPlayer { get; private set; } = null;
-
-        public static ConfigEntry<float> SSadisticHeatResDrainEntry { get; private set; } = null;
-        public static ConfigEntry<float> SSadisticHeatResRecoveryEntry { get; private set; } = null;
-        public static ConfigEntry<float> SSadisticHeatResExplosiveSizeBase { get; private set; } = null;
-        public static ConfigEntry<float> SSadisticHeatResExplosiveSizeNormMin { get; private set; } = null;
-        public static ConfigEntry<float> SSadisticHeatResExplosiveSizeNormMax { get; private set; } = null;
-        public static ConfigEntry<float> SSadisticHeatResExplosiveDmgScalar { get; private set; } = null;
-        public static ConfigEntry<bool> SSadisticHeatResExplosiveDmgPlayer { get; private set; } = null;
-
-        public static ConfigEntry<float> SSSensoredStormHeatResDrainEntry { get; private set; } = null;
-        public static ConfigEntry<float> SSSensoredStormHeatResRecoveryEntry { get; private set; } = null;
-        public static ConfigEntry<float> SSSensoredStormHeatResExplosiveSizeBase { get; private set; } = null;
-        public static ConfigEntry<float> SSSensoredStormHeatResExplosiveSizeNormMin { get; private set; } = null;
-        public static ConfigEntry<float> SSSensoredStormHeatResExplosiveSizeNormMax { get; private set; } = null;
-        public static ConfigEntry<float> SSSensoredStormHeatResExplosiveDmgScalar { get; private set; } = null;
-        public static ConfigEntry<bool> SSSensoredStormHeatResExplosiveDmgPlayer { get; private set; } = null;
-
-        public static ConfigEntry<float> ULTRAKILLHeatResDrainEntry { get; private set; } = null;
-        public static ConfigEntry<float> ULTRAKILLHeatResRecoveryEntry { get; private set; } = null;
-        public static ConfigEntry<float> ULTRAKILLHeatResExplosiveSizeBase { get; private set; } = null;
-        public static ConfigEntry<float> ULTRAKILLHeatResExplosiveSizeNormMin { get; private set; } = null;
-        public static ConfigEntry<float> ULTRAKILLHeatResExplosiveSizeNormMax { get; private set; } = null;
-        public static ConfigEntry<float> ULTRAKILLHeatResExplosiveDmgScalar { get; private set; } = null;
-        public static ConfigEntry<bool> ULTRAKILLHeatResExplosiveDmgPlayer { get; private set; } = null;
-
-        public static void Initialize()
+        public static StyleRankOptions GetStyleRankOptions(StyleRanks rank, StyleRanks nullRank = StyleRanks.Destructive)
         {
-            DestructiveHeatResDrainEntry = Config.Bind($"{""}Destructive", "HeatResDrain", -1.0f);
-            DestructiveHeatResRecoveryEntry = Config.Bind($"{""}Destructive", "HeatResRecovery", 100.0f);
-            DestructiveHeatResExplosiveSizeBase = Config.Bind($"{""}Destructive", "HeatResExplosiveSizeBase", -1.0f);
-            DestructiveHeatResExplosiveSizeNormMin = Config.Bind($"{""}Destructive", "HeatResExplosiveSizeNormMin", -1.0f);
-            DestructiveHeatResExplosiveSizeNormMax = Config.Bind($"{""}Destructive", "HeatResExplosiveSizeNormMax", -1.0f);
-            DestructiveHeatResExplosiveDmgScalar = Config.Bind($"{""}Destructive", "HeatResExplosiveDmgScalar", -1.0f);
-            DestructiveHeatResExplosiveDmgPlayer = Config.Bind($"{""}Destructive", "HeatResExplosiveDmgPlayer", false);
+            switch (rank)
+            {
+                case StyleRanks.Null:
+                if (nullRank == StyleRanks.Null)
+                {
+                    throw new InvalidEnumArgumentException("Null style rank has no options, and for some reason caller requested null style rank options");
+                }
+                else
+                {
+                    return GetStyleRankOptions(nullRank);
+                }
+                case StyleRanks.Destructive:
+                    return DestructiveOptions;
+                case StyleRanks.Chaotic:
+                    return ChaoticOptions;
+                case StyleRanks.Brutal:
+                    return BrutalOptions;
+                case StyleRanks.Anarchic:
+                    return AnarchicOptions;
+                case StyleRanks.Supreme:
+                    return SupremeOptions;
+                case StyleRanks.SSadistic:
+                    return SSadisticOptions;
+                case StyleRanks.SSSensoredStorm:
+                    return SSSensoredStormOptions;
+                case StyleRanks.ULTRAKILL:
+                    return ULTRAKILLOptions;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
 
-            ChaoticHeatResDrainEntry = Config.Bind($"{""}Chaotic", "HeatResDrain", -1.0f);
-            ChaoticHeatResRecoveryEntry = Config.Bind($"{""}Chaotic", "HeatResRecovery", 100.0f);
-            ChaoticHeatResExplosiveSizeBase = Config.Bind($"{""}Chaotic", "HeatResExplosiveSizeBase", -1.0f);
-            ChaoticHeatResExplosiveSizeNormMin = Config.Bind($"{""}Chaotic", "HeatResExplosiveSizeNormMin", -1.0f);
-            ChaoticHeatResExplosiveSizeNormMax = Config.Bind($"{""}Chaotic", "HeatResExplosiveSizeNormMax", -1.0f);
-            ChaoticHeatResExplosiveDmgScalar = Config.Bind($"{""}Chaotic", "HeatResExplosiveDmgScalar", -1.0f);
-            ChaoticHeatResExplosiveDmgPlayer = Config.Bind($"{""}Chaotic", "HeatResExplosiveDmgPlayer", false);
+        internal static void Initialize()
+        {
+            DestructiveOptions = new StyleRankOptions(StyleRanks.Destructive, Config, 
+                heatResDrain: -1.0f,
+                heatResRecovery: 100.0f,
+                heatResExplosiveSizeBase: -1.0f,
+                heatResExplosiveSizeNormMin: -1.0f,
+                heatResExplosiveSizeNormMax: -1.0f,
+                heatResExplosiveDmgScalar: -1.0f,
+                heatResExplosiveDmgPlayer: false,
+                explosiveAttacksHeatResThreshold: 0.0f,
+                revolverTwirlCoolingScalar: 0.3f
+            );
 
-            BrutalHeatResDrainEntry = Config.Bind($"{""}Brutal", "HeatResDrain", -1.0f);
-            BrutalHeatResRecoveryEntry = Config.Bind($"{""}Brutal", "HeatResRecovery", 100.0f);
-            BrutalHeatResExplosiveSizeBase = Config.Bind($"{""}Brutal", "HeatResExplosiveSizeBase", -1.0f);
-            BrutalHeatResExplosiveSizeNormMin = Config.Bind($"{""}Brutal", "HeatResExplosiveSizeNormMin", -1.0f);
-            BrutalHeatResExplosiveSizeNormMax = Config.Bind($"{""}Brutal", "HeatResExplosiveSizeNormMax", -1.0f);
-            BrutalHeatResExplosiveDmgScalar = Config.Bind($"{""}Brutal", "HeatResExplosiveDmgScalar", -1.0f);
-            BrutalHeatResExplosiveDmgPlayer = Config.Bind($"{""}Brutal", "HeatResExplosiveDmgPlayer", false);
+            ChaoticOptions = new StyleRankOptions(StyleRanks.Chaotic, Config, 
+                heatResDrain: -1.0f,
+                heatResRecovery: 100.0f,
+                heatResExplosiveSizeBase: -1.0f,
+                heatResExplosiveSizeNormMin: -1.0f,
+                heatResExplosiveSizeNormMax: -1.0f,
+                heatResExplosiveDmgScalar: -1.0f,
+                heatResExplosiveDmgPlayer: false,
+                explosiveAttacksHeatResThreshold: 0.0f,
+                revolverTwirlCoolingScalar: 0.3f
+            );
 
-            AnarchicHeatResDrainEntry = Config.Bind($"{""}Anarchic", "HeatResDrain", 30.0f);
-            AnarchicHeatResRecoveryEntry = Config.Bind($"{""}Anarchic", "HeatResRecovery", 1.7f);
-            AnarchicHeatResExplosiveSizeBase = Config.Bind($"{""}Anarchic", "HeatResExplosiveSizeBase", -1.0f);
-            AnarchicHeatResExplosiveSizeNormMin = Config.Bind($"{""}Anarchic", "HeatResExplosiveSizeNormMin", -1.0f);
-            AnarchicHeatResExplosiveSizeNormMax = Config.Bind($"{""}Anarchic", "HeatResExplosiveSizeNormMax", -1.0f);
-            AnarchicHeatResExplosiveDmgScalar = Config.Bind($"{""}Anarchic", "HeatResExplosiveDmgScalar", -1.0f);
-            AnarchicHeatResExplosiveDmgPlayer = Config.Bind($"{""}Anarchic", "HeatResExplosiveDmgPlayer", false);
+            BrutalOptions = new StyleRankOptions(StyleRanks.Brutal, Config, 
+                heatResDrain: -1.0f,
+                heatResRecovery: 100.0f,
+                heatResExplosiveSizeBase: -1.0f,
+                heatResExplosiveSizeNormMin: -1.0f,
+                heatResExplosiveSizeNormMax: -1.0f,
+                heatResExplosiveDmgScalar: -1.0f,
+                heatResExplosiveDmgPlayer: false,
+                explosiveAttacksHeatResThreshold: 10.0f,
+                revolverTwirlCoolingScalar: 0.3f
+            );
 
-            SupremeHeatResDrainEntry = Config.Bind($"{""}Supreme", "HeatResDrain", 60.0f);
-            SupremeHeatResRecoveryEntry = Config.Bind($"{""}Supreme", "HeatResRecovery", 2.0f);
-            SupremeHeatResExplosiveSizeBase = Config.Bind($"{""}Supreme", "HeatResExplosiveSizeBase", -1.0f);
-            SupremeHeatResExplosiveSizeNormMin = Config.Bind($"{""}Supreme", "HeatResExplosiveSizeNormMin", -1.0f);
-            SupremeHeatResExplosiveSizeNormMax = Config.Bind($"{""}Supreme", "HeatResExplosiveSizeNormMax", -1.0f);
-            SupremeHeatResExplosiveDmgScalar = Config.Bind($"{""}Supreme", "HeatResExplosiveDmgScalar", -1.0f);
-            SupremeHeatResExplosiveDmgPlayer = Config.Bind($"{""}Supreme", "HeatResExplosiveDmgPlayer", false);
+            AnarchicOptions = new StyleRankOptions(StyleRanks.Anarchic, Config, 
+                heatResDrain: 30.0f,
+                heatResRecovery: 1.7f,
+                heatResExplosiveSizeBase: -1.0f,
+                heatResExplosiveSizeNormMin: -1.0f,
+                heatResExplosiveSizeNormMax: -1.0f,
+                heatResExplosiveDmgScalar: -1.0f,
+                heatResExplosiveDmgPlayer: false,
+                explosiveAttacksHeatResThreshold: 10.0f,
+                revolverTwirlCoolingScalar: 0.3f
+            );
 
-            SSadisticHeatResDrainEntry = Config.Bind($"{""}SSadistic", "HeatResDrain", 70.0f);
-            SSadisticHeatResRecoveryEntry = Config.Bind($"{""}SSadistic", "HeatResRecovery", 2.0f);
-            SSadisticHeatResExplosiveSizeBase = Config.Bind($"{""}SSadistic", "HeatResExplosiveSizeBase", 12.0f);
-            SSadisticHeatResExplosiveSizeNormMin = Config.Bind($"{""}SSadistic", "HeatResExplosiveSizeNormMin", 2.5f);
-            SSadisticHeatResExplosiveSizeNormMax = Config.Bind($"{""}SSadistic", "HeatResExplosiveSizeNormMax", 7.0f);
-            SSadisticHeatResExplosiveDmgScalar = Config.Bind($"{""}SSadistic", "HeatResExplosiveDmgScalar", 0.35f);
-            SSadisticHeatResExplosiveDmgPlayer = Config.Bind($"{""}SSadistic", "HeatResExplosiveDmgPlayer", true);
+            SupremeOptions = new StyleRankOptions(StyleRanks.Supreme, Config, 
+                heatResDrain: 60.0f,
+                heatResRecovery: 2.0f,
+                heatResExplosiveSizeBase: -1.0f,
+                heatResExplosiveSizeNormMin: -1.0f,
+                heatResExplosiveSizeNormMax: -1.0f,
+                heatResExplosiveDmgScalar: -1.0f,
+                heatResExplosiveDmgPlayer: false,
+                explosiveAttacksHeatResThreshold: 15.0f,
+                revolverTwirlCoolingScalar: 0.3f
+            );
 
-            SSSensoredStormHeatResDrainEntry = Config.Bind($"{""}SSSensoredStorm", "HeatStormResDrain", 75.0f);
-            SSSensoredStormHeatResRecoveryEntry = Config.Bind($"{""}SSSensoredStorm", "HeatStormResRecovery", 2.1f);
-            SSSensoredStormHeatResExplosiveSizeBase = Config.Bind($"{""}SSSensoredStorm", "HeatResExplosiveSizeBase", 14.0f);
-            SSSensoredStormHeatResExplosiveSizeNormMin = Config.Bind($"{""}SSSensoredStorm", "HeatResExplosiveSizeNormMin", 0.15f);
-            SSSensoredStormHeatResExplosiveSizeNormMax = Config.Bind($"{""}SSSensoredStorm", "HeatResExplosiveSizeNormMax", 8.5f);
-            SSSensoredStormHeatResExplosiveDmgScalar = Config.Bind($"{""}SSSensoredStorm", "HeatResExplosiveDmgScalar", 0.5f);
-            SSSensoredStormHeatResExplosiveDmgPlayer = Config.Bind($"{""}SSSensoredStorm", "HeatResExplosiveDmgPlayer", true);
+            SSadisticOptions = new StyleRankOptions(StyleRanks.SSadistic, Config, 
+                heatResDrain: 70.0f,
+                heatResRecovery: 2.0f,
+                heatResExplosiveSizeBase: 12.0f,
+                heatResExplosiveSizeNormMin: 2.5f,
+                heatResExplosiveSizeNormMax: -7.0f,
+                heatResExplosiveDmgScalar: 0.35f,
+                heatResExplosiveDmgPlayer: true,
+                explosiveAttacksHeatResThreshold: 15.0f,
+                revolverTwirlCoolingScalar: 0.3f
+            );
 
-            ULTRAKILLHeatResRecoveryEntry = Config.Bind($"{""}ULTRAKILL", "HeatResRecovery", 2.4f);
-            ULTRAKILLHeatResDrainEntry = Config.Bind($"{""}ULTRAKILL", "HeatResDrain", 100.0f);
-            ULTRAKILLHeatResExplosiveSizeBase = Config.Bind($"{""}ULTRAKILL", "HeatResExplosiveSizeBase", 20.0f);
-            ULTRAKILLHeatResExplosiveSizeNormMin = Config.Bind($"{""}ULTRAKILL", "HeatResExplosiveSizeNormMin", 0.15f);
-            ULTRAKILLHeatResExplosiveSizeNormMax = Config.Bind($"{""}ULTRAKILL", "HeatResExplosiveSizeNormMax", 6.5f);
-            ULTRAKILLHeatResExplosiveDmgScalar = Config.Bind($"{""}ULTRAKILL", "HeatResExplosiveDmgScalar", 0.8f);
-            ULTRAKILLHeatResExplosiveDmgPlayer = Config.Bind($"{""}ULTRAKILL", "HeatResExplosiveDmgPlayer", true);
+            SSSensoredStormOptions = new StyleRankOptions(StyleRanks.SSSensoredStorm, Config, 
+                heatResDrain: 75.0f,
+                heatResRecovery: 2.1f,
+                heatResExplosiveSizeBase: 14.0f,
+                heatResExplosiveSizeNormMin: 0.15f,
+                heatResExplosiveSizeNormMax: 8.5f,
+                heatResExplosiveDmgScalar: 0.5f,
+                heatResExplosiveDmgPlayer: true,
+                explosiveAttacksHeatResThreshold: 17.5f,
+                revolverTwirlCoolingScalar: 0.25f
+            );
+
+            ULTRAKILLOptions = new StyleRankOptions(StyleRanks.ULTRAKILL, Config, 
+                heatResDrain: 2.4f,
+                heatResRecovery: 100.0f,
+                heatResExplosiveSizeBase: 20.0f,
+                heatResExplosiveSizeNormMin: 0.15f,
+                heatResExplosiveSizeNormMax: 6.5f,
+                heatResExplosiveDmgScalar: 0.8f,
+                heatResExplosiveDmgPlayer: true,
+                explosiveAttacksHeatResThreshold: 20.0f,
+                revolverTwirlCoolingScalar: 0.3f
+            );
         }
         
         internal static ConfigFile Config = null;
+    }
+
+    public class StyleRankOptions
+    {
+        public StyleRankOptions(StyleRanks styleRank, ConfigFile config, float heatResDrain, float heatResRecovery, float heatResExplosiveSizeBase, float heatResExplosiveSizeNormMin, float heatResExplosiveSizeNormMax, float heatResExplosiveDmgScalar, bool heatResExplosiveDmgPlayer, float explosiveAttacksHeatResThreshold, float revolverTwirlCoolingScalar)
+        {
+            string category = $"{styleRank}";
+            HeatResDrain = config.Bind(category, "HeatResDrain", heatResDrain);
+            HeatResRecovery = config.Bind(category, "HeatResRecovery", heatResRecovery);
+            HeatResExplosiveSizeBase = config.Bind(category, "HeatResExplosiveSizeBase", heatResExplosiveSizeBase);
+            HeatResExplosiveSizeNormMin = config.Bind(category, "HeatResExplosiveSizeNormMin", heatResExplosiveSizeNormMin);
+            HeatResExplosiveSizeNormMax = config.Bind(category, "HeatResExplosiveSizeNormMax", heatResExplosiveSizeNormMax);
+            HeatResExplosiveDmgScalar = config.Bind(category, "HeatResExplosiveDmgScalar", heatResExplosiveDmgScalar);
+            HeatResExplosiveDmgPlayer = config.Bind(category, "HeatResExplosiveDmgPlayer", heatResExplosiveDmgPlayer);
+            RevolverCoolingScalar = config.Bind(category, "RevolverTwirlCoolingScalar", revolverTwirlCoolingScalar);
+            
+            ExplosiveAttacksHeatResThreshold = config.Bind(category, "ExplosiveAttacksHeatResThreshold", explosiveAttacksHeatResThreshold);
+        }
+
+        public ConfigEntry<float> HeatResDrain { get; private set; } = null;
+        public ConfigEntry<float> HeatResRecovery { get; private set; } = null;
+        public ConfigEntry<float> HeatResExplosiveSizeBase { get; private set; } = null;
+        public ConfigEntry<float> HeatResExplosiveSizeNormMin { get; private set; } = null;
+        public ConfigEntry<float> HeatResExplosiveSizeNormMax { get; private set; } = null;
+        public ConfigEntry<float> HeatResExplosiveDmgScalar { get; private set; } = null;
+        public ConfigEntry<bool> HeatResExplosiveDmgPlayer { get; private set; } = null;
+
+        public ConfigEntry<float> ExplosiveAttacksHeatResThreshold { get; private set; } = null;
+        public ConfigEntry<float> RevolverCoolingScalar { get; private set; } = null;
+    }
+
+    public class HeatResistanceStageOptions
+    {
+        public ConfigEntry<float> Threshold { get; private set; } = null;
+        public ConfigEntry<float> AdditionalAntiHPGain { get; private set; } = null;
+        public ConfigEntry<float> RankDescensionTimerChange { get; private set; } = null;
     }
 }

@@ -39,7 +39,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
         public TextMeshProUGUI OurHeatResistanceFlavourText { get; private set; }
         public TextMeshProUGUI HeatResLabel { get; private set; }
-        public TextMeshProUGUI HeatRestPercentage { get; private set; }
+        public TextMeshProUGUI HeatResPercentage { get; private set; }
         public TextMeshProUGUI HeatResFlashingText { get; private set; }
         public Image ScreenShatterImage { get; private set; }
         public float DefaultHurtingSoundPitch { get; private set; }
@@ -77,36 +77,9 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             {
                 FieldPublisher<HeatResistance, float> heatResistance = new FieldPublisher<HeatResistance, float>(OurHeatResistance, "heatResistance");
 
-                float heatResExplosionLimit = 35.0f;
-                // TODO: configurable-ify this stuffs
-                switch (Shud.GetStyleRank())
-                {
-                    case StyleRanks.Null:
-                    case StyleRanks.Destructive:
-                    heatResExplosionLimit = 0.0f;
-                        break;
-                    case StyleRanks.Chaotic:
-                    heatResExplosionLimit = 0.0f;
-                        break;
-                    case StyleRanks.Brutal:
-                    heatResExplosionLimit = 10.0f;
-                        break;
-                    case StyleRanks.Anarchic:
-                    heatResExplosionLimit = 10.0f;
-                        break;
-                    case StyleRanks.Supreme:
-                    heatResExplosionLimit = 15.0f;
-                        break;
-                    case StyleRanks.SSadistic:
-                    heatResExplosionLimit = 15.0f;
-                        break;
-                    case StyleRanks.SSSensoredStorm:
-                    heatResExplosionLimit = 17.5f;
-                        break;
-                    case StyleRanks.ULTRAKILL:
-                    heatResExplosionLimit = 20.0f;
-                        break;
-                }
+                var options = Options.GetStyleRankOptions(Shud.GetStyleRank());
+
+                float heatResExplosionLimit = options.ExplosiveAttacksHeatResThreshold.Value;
 
                 if (heatResistance.Value <= heatResExplosionLimit && !fromExplosion)
                 {
@@ -122,74 +95,14 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
         private bool HeatResExplosion(float multiplier, Vector3 hitPoint, bool forceDontHitPlayer, out float explosiveSize)
         {
-            StyleRanks styleRank = (StyleRanks)(Shud.rankIndex);
+            StyleRanks styleRank = Shud.GetStyleRank();
+            var options = Options.GetStyleRankOptions(styleRank);
 
-            float explosiveSizeBase = 0.0f;
-            float explosiveSizeNormMin = 1000000000.0f;
-            float explosiveSizeNormMax = 10000000000.0f;
-            float explosiveDmgScalar = -1.0f;
-            bool explosiveDamagePlayer = false;
-
-            switch (styleRank)
-            {
-                case StyleRanks.Null:
-                case StyleRanks.Destructive:
-                    explosiveSizeBase = Options.DestructiveHeatResExplosiveSizeBase.Value;
-                    explosiveSizeNormMin = Options.DestructiveHeatResExplosiveSizeNormMin.Value;
-                    explosiveSizeNormMax = Options.DestructiveHeatResExplosiveSizeNormMax.Value;
-                    explosiveDmgScalar = Options.DestructiveHeatResExplosiveDmgScalar.Value;
-                    explosiveDamagePlayer = Options.DestructiveHeatResExplosiveDmgPlayer.Value;
-                    break;
-                case StyleRanks.Chaotic:
-                    explosiveSizeBase = Options.ChaoticHeatResExplosiveSizeBase.Value;
-                    explosiveSizeNormMin = Options.ChaoticHeatResExplosiveSizeNormMin.Value;
-                    explosiveSizeNormMax = Options.ChaoticHeatResExplosiveSizeNormMax.Value;
-                    explosiveDmgScalar = Options.ChaoticHeatResExplosiveDmgScalar.Value;
-                    explosiveDamagePlayer = Options.ChaoticHeatResExplosiveDmgPlayer.Value;
-                    break;
-                case StyleRanks.Brutal:
-                    explosiveSizeBase = Options.BrutalHeatResExplosiveSizeBase.Value;
-                    explosiveSizeNormMin = Options.BrutalHeatResExplosiveSizeNormMin.Value;
-                    explosiveSizeNormMax = Options.BrutalHeatResExplosiveSizeNormMax.Value;
-                    explosiveDmgScalar = Options.BrutalHeatResExplosiveDmgScalar.Value;
-                    explosiveDamagePlayer = Options.BrutalHeatResExplosiveDmgPlayer.Value;
-                    break;
-                case StyleRanks.Anarchic:
-                    explosiveSizeBase = Options.AnarchicHeatResExplosiveSizeBase.Value;
-                    explosiveSizeNormMin = Options.AnarchicHeatResExplosiveSizeNormMin.Value;
-                    explosiveSizeNormMax = Options.AnarchicHeatResExplosiveSizeNormMax.Value;
-                    explosiveDmgScalar = Options.AnarchicHeatResExplosiveDmgScalar.Value;
-                    explosiveDamagePlayer = Options.AnarchicHeatResExplosiveDmgPlayer.Value;
-                    break;
-                case StyleRanks.Supreme:
-                    explosiveSizeBase = Options.AnarchicHeatResExplosiveSizeBase.Value;
-                    explosiveSizeNormMin = Options.SupremeHeatResExplosiveSizeNormMin.Value;
-                    explosiveSizeNormMax = Options.SupremeHeatResExplosiveSizeNormMax.Value;
-                    explosiveDmgScalar = Options.SupremeHeatResExplosiveDmgScalar.Value;
-                    explosiveDamagePlayer = Options.SupremeHeatResExplosiveDmgPlayer.Value;
-                    break;
-                case StyleRanks.SSadistic:
-                    explosiveSizeBase = Options.SSadisticHeatResExplosiveSizeBase.Value;
-                    explosiveSizeNormMin = Options.SSadisticHeatResExplosiveSizeNormMin.Value;
-                    explosiveSizeNormMax = Options.SSadisticHeatResExplosiveSizeNormMax.Value;
-                    explosiveDmgScalar = Options.SSadisticHeatResExplosiveDmgScalar.Value;
-                    explosiveDamagePlayer = Options.SSadisticHeatResExplosiveDmgPlayer.Value;
-                    break;
-                case StyleRanks.SSSensoredStorm:
-                    explosiveSizeBase = Options.SSSensoredStormHeatResExplosiveSizeBase.Value;
-                    explosiveSizeNormMin = Options.SSSensoredStormHeatResExplosiveSizeNormMin.Value;
-                    explosiveSizeNormMax = Options.SSSensoredStormHeatResExplosiveSizeNormMax.Value;
-                    explosiveDmgScalar = Options.SSSensoredStormHeatResExplosiveDmgScalar.Value;
-                    explosiveDamagePlayer = Options.SSSensoredStormHeatResExplosiveDmgPlayer.Value;
-                    break;
-                case StyleRanks.ULTRAKILL:
-                    explosiveSizeBase = Options.ULTRAKILLHeatResExplosiveSizeBase.Value;
-                    explosiveSizeNormMin = Options.ULTRAKILLHeatResExplosiveSizeNormMin.Value;
-                    explosiveSizeNormMax = Options.ULTRAKILLHeatResExplosiveSizeNormMax.Value;
-                    explosiveDmgScalar = Options.ULTRAKILLHeatResExplosiveDmgScalar.Value;
-                    explosiveDamagePlayer = Options.ULTRAKILLHeatResExplosiveDmgPlayer.Value;
-                    break;
-            }
+            float explosiveSizeBase = options.HeatResExplosiveSizeBase.Value;
+            float explosiveSizeNormMin = options.HeatResExplosiveSizeNormMin.Value;
+            float explosiveSizeNormMax = options.HeatResExplosiveSizeNormMax.Value;
+            float explosiveDmgScalar = options.HeatResExplosiveDmgScalar.Value;
+            bool explosiveDamagePlayer = options.HeatResExplosiveDmgPlayer.Value;
 
             explosiveSize = explosiveSizeBase * Mathf.Max(0.0f, explosiveSizeNormMin <= explosiveSizeNormMax ? NyxMath.NormalizeToRange(multiplier, explosiveSizeNormMin, explosiveSizeNormMax) : NyxMath.InverseNormalizeToRange(multiplier, explosiveSizeNormMin, explosiveSizeNormMax));
 
@@ -425,7 +338,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 //OurHeatResistance.gameObject.DebugPrintChildren();
                 OurHeatResistanceFlavourText = OurHeatResistance.gameObject.transform.Find("Flavor Text").gameObject.GetComponent<TextMeshProUGUI>();
                 HeatResLabel = OurHeatResistance.gameObject.transform.Find("Meter/Label").gameObject.GetComponent<TextMeshProUGUI>();
-                HeatRestPercentage = OurHeatResistance.gameObject.transform.Find("Meter/Fill Area/Fill/Percentage").gameObject.GetComponent<TextMeshProUGUI>();
+                HeatResPercentage = OurHeatResistance.gameObject.transform.Find("Meter/Fill Area/Fill/Percentage").gameObject.GetComponent<TextMeshProUGUI>();
                 HeatResFlashingText = OurHeatResistance.gameObject.transform.Find("Warning").gameObject.GetComponent<TextMeshProUGUI>();
 
                 OurHeatResistanceFlavourText.text = "YOU THINK YOU'RE SO GOOD? WELL YOU'D BETTER KEEP MOVING, BLOOD BUCKET";
@@ -441,8 +354,9 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 //heatResInstanceFI.SetValue(null, null);
             }
             
+            var styleRankOptions = Options.GetStyleRankOptions(Shud.GetStyleRank());
             float revolverCoolingScalar = 1.0f;
-            revolverCoolingScalar = Mathf.Lerp(1.0f, 0.4f, Mathf.Clamp(NyxMath.NormalizeToRange(RevolverTwirlThisUpdate * (GunControl.Instance.dualWieldCount + 1), 0.1f, 12.0f), 0.0f, 1.0f));
+            revolverCoolingScalar = Mathf.Lerp(1.0f, 0.4f, Mathf.Clamp(NyxMath.NormalizeToRange(RevolverTwirlThisUpdate * (GunControl.Instance.dualWieldCount + 1) * styleRankOptions.RevolverCoolingScalar.Value, 0.1f, 3.0f), 0.0f, 1.0f));
             RevolverTwirlThisUpdate = 0.0f;
 
             TimeSinceLastHeatResActivation += Time.fixedDeltaTime;
@@ -494,7 +408,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
                 if (EarthMoverFlushWarningSpawned)
                 {
-                    pushDownFactor += 110.0f;
+                    pushDownFactor = Mathf.Max(pushDownFactor, 110.0f);
                 }
                 
                 pushDownFactor *= 0.7f;
@@ -504,45 +418,11 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 
                 float heatResistanceRecovery = player.rb.velocity.magnitude;
 
-                StyleRanks styleRank = (StyleRanks)(Shud.rankIndex);
+                StyleRanks styleRank = Shud.GetStyleRank();
+                var options = Options.GetStyleRankOptions(styleRank);
                 OurHeatResistance.speed = 0.0f;
-                HeatResistanceDrain = 0.0f;
-                switch (styleRank)
-                {
-                    case StyleRanks.Null:
-                    case StyleRanks.Destructive:
-                        heatResistanceRecovery *= Options.DestructiveHeatResRecoveryEntry.Value;
-                        HeatResistanceDrain = Options.DestructiveHeatResDrainEntry.Value;
-                        break;
-                    case StyleRanks.Chaotic:
-                        heatResistanceRecovery *= Options.ChaoticHeatResRecoveryEntry.Value;
-                        HeatResistanceDrain = Options.ChaoticHeatResDrainEntry.Value;
-                        break;
-                    case StyleRanks.Brutal:
-                        heatResistanceRecovery *= Options.BrutalHeatResRecoveryEntry.Value;
-                        HeatResistanceDrain = Options.BrutalHeatResDrainEntry.Value;
-                        break;
-                    case StyleRanks.Anarchic:
-                        heatResistanceRecovery *= Options.AnarchicHeatResRecoveryEntry.Value;
-                        HeatResistanceDrain = Options.AnarchicHeatResDrainEntry.Value;
-                        break;
-                    case StyleRanks.Supreme:
-                        heatResistanceRecovery *= Options.SupremeHeatResRecoveryEntry.Value;
-                        HeatResistanceDrain = Options.SupremeHeatResDrainEntry.Value;
-                        break;
-                    case StyleRanks.SSadistic:
-                        heatResistanceRecovery *= Options.SSadisticHeatResRecoveryEntry.Value;
-                        HeatResistanceDrain = Options.SSadisticHeatResDrainEntry.Value;
-                        break;
-                    case StyleRanks.SSSensoredStorm:
-                        heatResistanceRecovery *= Options.SSSensoredStormHeatResRecoveryEntry.Value;
-                        HeatResistanceDrain = Options.SSSensoredStormHeatResDrainEntry.Value;
-                        break;
-                    case StyleRanks.ULTRAKILL:
-                        heatResistanceRecovery *= Options.ULTRAKILLHeatResRecoveryEntry.Value;
-                        HeatResistanceDrain = Options.ULTRAKILLHeatResDrainEntry.Value;
-                        break;
-                }
+                heatResistanceRecovery *= options.HeatResRecovery.Value;
+                HeatResistanceDrain = options.HeatResDrain.Value;
 
                 HeatResistanceDrain = HeatResistanceDrain * ((player.touchingWaters.Count > 0) ? 0.5f : 1.0f);
                 HeatResistanceDrain *= player.fakeFallRequests > 0 ? 0.85f : 1.0f;
@@ -583,15 +463,6 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
                 FieldPublisher<HeatResistance, float> appliedHeatResistance = new FieldPublisher<HeatResistance, float>(OurHeatResistance, "heatResistance");
                 FieldPublisher<HeatResistance, GameObject> hurtingSound = new FieldPublisher<HeatResistance, GameObject>(OurHeatResistance, "hurtingSound");
-                
-                if (CurrentHeatResistance <= 0.0f)
-                {
-                    //CurrentHeatResistance = Mathf.MoveTowards(CurrentHeatResistance, -100.0f, (Time.fixedDeltaTime * (CurrentHeatResistanceVel * 0.5f)));
-                }
-                else
-                {
-                    //CurrentHeatResistance = Mathf.MoveTowards(CurrentHeatResistance, 0.0f, (Time.fixedDeltaTime * (CurrentHeatResistanceVel)));
-                }
                 
                 float scaledHeatResistanceDrain = HeatResistanceDrain;
                 
@@ -730,8 +601,8 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             }
 
             float temperature = Mathf.Lerp(60.0f, 140.0f, NyxMath.InverseNormalizeToRange(CurrentHeatResistance, -100.0f, 100.0f));
-            HeatResLabel.text = $"INTERNAL TEMPERATURE - {temperature:F1}°C";
-            HeatRestPercentage.text = $"{temperature:F2}°C";
+            HeatResLabel.text = $"INTERNAL TEMPERATURE - {temperature:F1}C";
+            HeatResPercentage.text = $"{temperature:F2}C";
         }
 
         private void PlayerPostHurt(EventMethodCancelInfo cancelInfo, PlayerComponents player, int unprocessedDamage, int processedDamage, bool invincible, float scoreLossMultiplier, bool explosion, bool instablack, float hardDamageMultiplier, bool ignoreInvincibility)
