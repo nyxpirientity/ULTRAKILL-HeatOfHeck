@@ -138,8 +138,8 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             );
 
             ULTRAKILLOptions = new StyleRankOptions(StyleRanks.ULTRAKILL, Config, 
-                heatResDrain: 2.4f,
-                heatResRecovery: 100.0f,
+                heatResDrain: 100.0f,
+                heatResRecovery: 2.4f,
                 heatResExplosiveSizeBase: 20.0f,
                 heatResExplosiveSizeNormMin: 0.15f,
                 heatResExplosiveSizeNormMax: 6.5f,
