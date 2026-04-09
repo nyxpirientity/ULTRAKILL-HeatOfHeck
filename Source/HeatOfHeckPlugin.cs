@@ -19,12 +19,14 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
         {
             Log.Initialize(Logger);
             HeatOfHeck.Initialize();
+            V1HeckHeat.Initialize();
             NyxLib.Cheats.ReadyForCheatRegistration += RegisterCheats;
             Options.Config = Config;
             Options.Initialize();
             Harmony.CreateAndPatchAll(GetType().Assembly);
             NyxLib.Assets.EnableExplosionsPicking();
             Assets.Initialize();
+
             if (!File.Exists(Config.ConfigFilePath))
             {
                 Config.Save();
