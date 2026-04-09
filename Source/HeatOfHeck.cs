@@ -126,7 +126,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             explosion.harmless = explosiveDmgScalar <= 0.0f;
             explosion.lowQuality = false;
             explosion.maxSize = explosiveSize;
-            explosion.speed = explosion.maxSize * 0.03f;
+            explosion.speed = Mathf.Pow(explosion.maxSize * 0.5f, 1.2f) * 0.095f;
             explosion.enemyDamageMultiplier = 1.0f;
             explosion.playerDamageOverride = -1;
             explosion.ignite = true;
