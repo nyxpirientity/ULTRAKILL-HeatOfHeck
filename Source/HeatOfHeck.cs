@@ -354,7 +354,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
                     if (TimeSinceLastHeatResActivation > 5.0f)
                     {
-                        Shud.AddPoints(250, "<color=#ff9b31>ON FIRE</color>", null, null, -1, "", "");
+                        Shud.AddPoints(75, "<color=#ff9b31>ON FIRE</color>", null, null, -1, "", "");
                     }
 
                     TimeSinceLastHeatResActivation = 0.0f;
