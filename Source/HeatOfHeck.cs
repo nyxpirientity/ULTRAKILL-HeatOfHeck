@@ -197,6 +197,9 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             }
         }
 
+        public FieldInfo hrRechargingFI = AccessTools.Field(typeof(HeatResistance), "recharging");
+        public bool Cooling => ((LastEnabledHeatRes != null) && (bool)(hrRechargingFI.GetValue(LastEnabledHeatRes)));
+
         public float CurrentHeatResistance = 0.0f;
         float HeatResistanceVel = 0.0f;
         float HeatResistanceDrain = 0.0f;
@@ -260,7 +263,12 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 FieldPublisher<HeatResistance, GameObject> hurtingSound = new FieldPublisher<HeatResistance, GameObject>(OurHeatResistance, "hurtingSound");
                 FieldPublisher<HeatResistance, Image> screenShatter = new FieldPublisher<HeatResistance, Image>(OurHeatResistance, "screenShatter");
                 ScreenShatterImage = screenShatter.Value;
-                ScreenShatterImage.transform.position += Vector3.right * 1400.0f;
+                ScreenShatterImage.GetComponent<RectTransform>().anchorMax = new Vector2(1.0f, 1.0f);
+                ScreenShatterImage.GetComponent<RectTransform>().anchorMin = new Vector2(1.0f, 1.0f);
+                ScreenShatterImage.GetComponent<RectTransform>().anchoredPosition += (Vector2.left * 350.0f) + (Vector2.down * 75.0f);
+                var screenShatterEuler = ScreenShatterImage.GetComponent<RectTransform>().eulerAngles;
+                screenShatterEuler.z = screenShatterEuler.z + 30;
+                ScreenShatterImage.GetComponent<RectTransform>().eulerAngles = screenShatterEuler;
                 DefaultHurtingSoundPitch = hurtingSound.Value.GetComponent<AudioSource>().pitch;
                 BasePosition = OurHeatResistance.GetComponent<RectTransform>().anchoredPosition;
                 //BaseScale = OurHeatResistance.transform.localScale; WRONG because it does a scale effect when it enables lol
@@ -268,6 +276,8 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 //FieldInfo heatResInstanceFI = typeof(MonoSingleton<HeatResistance>).GetField("Instance", BindingFlags.Static | BindingFlags.NonPublic);
                 //heatResInstanceFI.SetValue(null, null);
             }
+            
+
             
             var styleRankOptions = Options.GetStyleRankOptions(Shud.GetStyleRank());
             float revolverCoolingScalar = 1.0f;
@@ -412,7 +422,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
                 scaledHeatResistanceDrain *= revolverCoolingScalar;
 
-                float targetVel = (heatResistanceRecovery - scaledHeatResistanceDrain);
+                float targetVel = Cooling ? heatResistanceRecovery + Options.CoolingChamberCoolingRate.Value : (heatResistanceRecovery - scaledHeatResistanceDrain);
                 HeatResistanceVel = Mathf.MoveTowards(HeatResistanceVel, targetVel, Time.fixedDeltaTime * (HeatResistanceDrain * 6.0f) * (targetVel > HeatResistanceVel ? 1.0f : 0.35f));
                 HeatResistanceVel = Mathf.Clamp(HeatResistanceVel, -HeatResistanceDrain, HeatResistanceDrain * 3.0f);
 
@@ -422,10 +432,13 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
                 appliedHeatResistance.Value = Mathf.Max(CurrentHeatResistance, 0.0f);
                 
-                if (CurrentHeatResistance < -95.0f)
+                bool otherHeatResEnabled = hasHeatResistanceThatsNotUs && (LastEnabledHeatRes.NullInvalid()?.isActiveAndEnabled).GetValueOrDefault(false);
+
+                if (CurrentHeatResistance < Options.StageOptions4.Threshold.Value)
                 {
-                    player.ForceAntiHP((float)50.0f * Time.fixedDeltaTime, silent: true, dontOverwriteHp: false, addToCooldown: true, stopInstaHeal: true);
+                    player.ForceAntiHP((float)Options.StageOptions4.AdditionalAntiHPGain.Value * Time.fixedDeltaTime, silent: true, dontOverwriteHp: false, addToCooldown: true, stopInstaHeal: true);
                     hurtingSound.Value.GetComponent<AudioSource>().pitch = DefaultHurtingSoundPitch + 0.4f + UnityEngine.Random.Range(0.0f, 0.1f);
+                    
                     switch (UnityEngine.Random.Range(0, 4))
                     {
                         case 0:
@@ -442,54 +455,55 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                         HeatResFlashingText.text = $"E{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}R{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}R{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}O{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}R{(char)UnityEngine.Random.Range(33, 96)}";
                             break;
                     }
-                    HeatResRankDescensionTimer += Time.fixedDeltaTime * -2.0f;
+
+                    HeatResRankDescensionTimer += Time.fixedDeltaTime * Options.StageOptions4.RankDescensionTimerChange.Value;
                     
-                    if (hasHeatResistanceThatsNotUs && (LastEnabledHeatRes.NullInvalid()?.isActiveAndEnabled).GetValueOrDefault(false))
+                    if (otherHeatResEnabled)
                     {
                         var otherHeatRes = LastEnabledHeatRes;
                         FieldPublisher<HeatResistance, float> otherHeatResistance = new FieldPublisher<HeatResistance, float>(otherHeatRes, "heatResistance");
-                        otherHeatResistance.Value = Mathf.MoveTowards(otherHeatResistance.Value, 0.0f, Time.fixedDeltaTime * otherHeatRes.speed * 1.25f);
+                        otherHeatResistance.Value = Mathf.MoveTowards(otherHeatResistance.Value, 0.0f, Time.fixedDeltaTime * otherHeatRes.speed * Options.StageOptions4.HeatResSpeedup.Value);
                     }
                 }
-                else if (CurrentHeatResistance < -50.0f)
+                else if (CurrentHeatResistance < Options.StageOptions3.Threshold.Value)
                 {
-                    player.ForceAntiHP((float)35.0f * Time.fixedDeltaTime, silent: true, dontOverwriteHp: false, addToCooldown: true, stopInstaHeal: true);
+                    player.ForceAntiHP((float)Options.StageOptions3.AdditionalAntiHPGain.Value * Time.fixedDeltaTime, silent: true, dontOverwriteHp: false, addToCooldown: true, stopInstaHeal: true);
                     hurtingSound.Value.GetComponent<AudioSource>().pitch = DefaultHurtingSoundPitch + 0.1f;
                     HeatResFlashingText.text = "CRITICAL";
-                    HeatResRankDescensionTimer += Time.fixedDeltaTime * -1.25f;
+                    HeatResRankDescensionTimer += Time.fixedDeltaTime * Options.StageOptions3.RankDescensionTimerChange.Value;
                     
-                    if (hasHeatResistanceThatsNotUs)
+                    if (otherHeatResEnabled)
                     {
                         var otherHeatRes = LastEnabledHeatRes;
                         FieldPublisher<HeatResistance, float> otherHeatResistance = new FieldPublisher<HeatResistance, float>(otherHeatRes, "heatResistance");
-                        otherHeatResistance.Value = Mathf.MoveTowards(otherHeatResistance.Value, 0.0f, Time.fixedDeltaTime * otherHeatRes.speed * 0.75f);
+                        otherHeatResistance.Value = Mathf.MoveTowards(otherHeatResistance.Value, 0.0f, Time.fixedDeltaTime * otherHeatRes.speed * Options.StageOptions3.HeatResSpeedup.Value);
                     }
                 }
-                else if (CurrentHeatResistance <= 0.0f)
+                else if (CurrentHeatResistance <= Options.StageOptions2.Threshold.Value)
                 {
                     hurtingSound.Value.GetComponent<AudioSource>().pitch = DefaultHurtingSoundPitch;
                     HeatResFlashingText.text = "WARNING:";
-                    HeatResRankDescensionTimer += Time.fixedDeltaTime * -0.5f;
-                    player.ForceAntiHP((float)10.0f * Time.fixedDeltaTime, silent: true, dontOverwriteHp: false, addToCooldown: true, stopInstaHeal: true);
+                    HeatResRankDescensionTimer += Time.fixedDeltaTime * Options.StageOptions2.RankDescensionTimerChange.Value;
+                    player.ForceAntiHP((float)Options.StageOptions2.AdditionalAntiHPGain.Value * Time.fixedDeltaTime, silent: true, dontOverwriteHp: false, addToCooldown: true, stopInstaHeal: true);
 
-                    if (hasHeatResistanceThatsNotUs)
+                    if (otherHeatResEnabled)
                     {
                         var otherHeatRes = HeatResistance.Instance;
                         FieldPublisher<HeatResistance, float> otherHeatResistance = new FieldPublisher<HeatResistance, float>(otherHeatRes, "heatResistance");
-                        otherHeatResistance.Value = Mathf.MoveTowards(otherHeatResistance.Value, 0.0f, Time.fixedDeltaTime * otherHeatRes.speed * 0.5f);
+                        otherHeatResistance.Value = Mathf.MoveTowards(otherHeatResistance.Value, 0.0f, Time.fixedDeltaTime * otherHeatRes.speed * Options.StageOptions2.HeatResSpeedup.Value);
                     }
                 }
-                else if (CurrentHeatResistance <= 50.0f)
+                else if (CurrentHeatResistance <= Options.StageOptions1.Threshold.Value)
                 {
                     hurtingSound.Value.GetComponent<AudioSource>().pitch = DefaultHurtingSoundPitch;
                     HeatResFlashingText.text = "WARNING:";
-                    HeatResRankDescensionTimer += Time.fixedDeltaTime * 1.25f;
+                    HeatResRankDescensionTimer += Time.fixedDeltaTime * Options.StageOptions1.RankDescensionTimerChange.Value;
                 }
                 else
                 {
                     hurtingSound.Value.GetComponent<AudioSource>().pitch = DefaultHurtingSoundPitch;
                     HeatResFlashingText.text = "WARNING:";
-                    HeatResRankDescensionTimer += Time.fixedDeltaTime * 2.0f;
+                    HeatResRankDescensionTimer += Time.fixedDeltaTime * Options.StageOptions0.RankDescensionTimerChange.Value;
                 }
 
                 HeatResRankDescensionTimer = Mathf.Min(HeatResRankDescensionTimer, HeatResRankDescensionTimerMax);
@@ -498,7 +512,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 {
                     Shud.DescendRank();
                     ResetHeatRestRankDescensionTimer();
-                    CurrentHeatResistance = Mathf.Max(CurrentHeatResistance, 0.0f);
+                    CurrentHeatResistance = Mathf.Max(CurrentHeatResistance, -10.0f);
                 }
             }
         }

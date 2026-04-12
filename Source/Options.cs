@@ -17,6 +17,13 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
         public static StyleRankOptions SSSensoredStormOptions { get; private set; } = null;
         public static StyleRankOptions ULTRAKILLOptions { get; private set; } = null;
 
+        public static ConfigEntry<float> CoolingChamberCoolingRate { get; private set; } = null;
+        public static HeatResistanceStageOptions StageOptions2 { get; private set; }
+        public static HeatResistanceStageOptions StageOptions3 { get; private set; }
+        public static HeatResistanceStageOptions StageOptions4 { get; private set; }
+        public static HeatResistanceStageOptions StageOptions0 { get; private set; }
+        public static HeatResistanceStageOptions StageOptions1 { get; private set; }
+
         public static StyleRankOptions GetStyleRankOptions(StyleRanks rank, StyleRanks nullRank = StyleRanks.Destructive)
         {
             switch (rank)
@@ -148,6 +155,14 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 explosiveAttacksHeatResThreshold: 20.0f,
                 revolverTwirlCoolingScalar: 0.3f
             );
+
+            CoolingChamberCoolingRate = Config.Bind("Balance.General", "CoolingChamberCoolingRate", 40.0f);
+        
+            StageOptions4 = new HeatResistanceStageOptions(4, Config, additionalAntiHPGain: 50.0f, threshold: -95.0f, rankDescensionTimerChange: -2.0f, vanillaHeatResSpeedup: 2.0f);
+            StageOptions3 = new HeatResistanceStageOptions(3, Config, additionalAntiHPGain: 35.0f, threshold: -50.0f, rankDescensionTimerChange: -1.25f, vanillaHeatResSpeedup: 1.5f);
+            StageOptions2 = new HeatResistanceStageOptions(2, Config, additionalAntiHPGain: 10.0f, threshold: 0.0f, rankDescensionTimerChange: -0.5f, vanillaHeatResSpeedup: 1.0f);
+            StageOptions1 = new HeatResistanceStageOptions(1, Config, additionalAntiHPGain: 0.0f, threshold: 50.0f, rankDescensionTimerChange: 1.25f, vanillaHeatResSpeedup: null);
+            StageOptions0 = new HeatResistanceStageOptions(0, Config, additionalAntiHPGain: 0.0f, threshold: null, rankDescensionTimerChange: 2.0f, vanillaHeatResSpeedup: null);
         }
         
         internal static ConfigFile Config = null;
@@ -184,8 +199,31 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
     public class HeatResistanceStageOptions
     {
+        public HeatResistanceStageOptions(int stageNum, ConfigFile config, float? additionalAntiHPGain, float? threshold, float? vanillaHeatResSpeedup, float rankDescensionTimerChange)
+        {
+            string category = $"HeatResStage{stageNum}";
+            
+            if (threshold.HasValue)
+            {
+                Threshold = config.Bind(category, "StageThreshold", threshold.Value);
+            }
+
+            if (additionalAntiHPGain.HasValue)
+            {
+                AdditionalAntiHPGain = config.Bind(category, "AdditionalAntiHPGain", additionalAntiHPGain.Value);
+            }
+
+            if (vanillaHeatResSpeedup.HasValue)
+            {
+                HeatResSpeedup = config.Bind(category, "VanillaHeatResSpeedup", vanillaHeatResSpeedup.Value);
+            }
+
+            RankDescensionTimerChange = config.Bind(category, "RankDescensionTimerChange", rankDescensionTimerChange);
+        }
+
         public ConfigEntry<float> Threshold { get; private set; } = null;
         public ConfigEntry<float> AdditionalAntiHPGain { get; private set; } = null;
+        public ConfigEntry<float> HeatResSpeedup { get; private set; } = null;
         public ConfigEntry<float> RankDescensionTimerChange { get; private set; } = null;
     }
 }
