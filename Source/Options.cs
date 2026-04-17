@@ -17,6 +17,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
         public static StyleRankOptions SSSensoredStormOptions { get; private set; } = null;
         public static StyleRankOptions ULTRAKILLOptions { get; private set; } = null;
 
+        public static ConfigEntry<float> WaterHeatingScalar { get; private set; } = null;
         public static ConfigEntry<float> CoolingChamberCoolingRate { get; private set; } = null;
         public static HeatResistanceStageOptions StageOptions2 { get; private set; }
         public static HeatResistanceStageOptions StageOptions3 { get; private set; }
@@ -156,7 +157,8 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 revolverTwirlCoolingScalar: 0.3f
             );
 
-            CoolingChamberCoolingRate = Config.Bind("Balance.General", "CoolingChamberCoolingRate", 40.0f);
+            CoolingChamberCoolingRate = Config.Bind("Balance.General", "CoolingChamberCoolingRate", 30.0f);
+            WaterHeatingScalar = Config.Bind("Balance.General", "WaterHeatingScalar", 0.7f);
         
             StageOptions4 = new HeatResistanceStageOptions(4, Config, additionalAntiHPGain: 50.0f, threshold: -95.0f, rankDescensionTimerChange: -2.0f, vanillaHeatResSpeedup: 2.0f);
             StageOptions3 = new HeatResistanceStageOptions(3, Config, additionalAntiHPGain: 35.0f, threshold: -50.0f, rankDescensionTimerChange: -1.25f, vanillaHeatResSpeedup: 1.5f);

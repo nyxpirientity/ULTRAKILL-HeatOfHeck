@@ -349,7 +349,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResistanceRecovery *= options.HeatResRecovery.Value;
                 HeatResistanceDrain = options.HeatResDrain.Value;
 
-                HeatResistanceDrain = HeatResistanceDrain * ((player.touchingWaters.Count > 0) ? 0.5f : 1.0f);
+                HeatResistanceDrain = HeatResistanceDrain * ((player.touchingWaters.Count > 0) ? Options.WaterHeatingScalar.Value : 1.0f);
                 HeatResistanceDrain *= player.fakeFallRequests > 0 ? 0.85f : 1.0f;
 
                 if (OurHeatResistance.isActiveAndEnabled && HeatResistanceDrain <= 0.0f)
