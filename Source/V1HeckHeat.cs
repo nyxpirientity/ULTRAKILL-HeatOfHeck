@@ -71,7 +71,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             if (HeatOfHeck.Instance.CurrentHeatResistance <= 35.0f)
             {
                 float burnStrength = NyxMath.InverseNormalizeToRange(HeatOfHeck.Instance.CurrentHeatResistance, -100.0f, 40.0f);
-                eid.ApplyDamage(Vector3.Normalize(eid.transform.position - player.transform.position) * burnStrength * 10.0f, eid.transform.position, burnStrength * 5.0f, 0.0f, null, false);
+                eid.ApplyDamage(Vector3.Normalize(eid.transform.position - player.transform.position) * burnStrength * 10.0f, eid.transform.position, burnStrength * Options.ContactDamageMaxDamage.Value, 0.0f, null, false);
                 SafeFromContactDamage.Add(eid.gameObject);
                 if (eid.Dead)
                 {
@@ -108,7 +108,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 return;
             }
             
-            if (LastContactDamageReset.TimeSince > 0.3)
+            if (LastContactDamageReset.TimeSince > Options.ContactDamageResetTime.Value)
             {
                 SafeFromContactDamage.Clear();
                 LastContactDamageReset.UpdateToNow();

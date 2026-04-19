@@ -17,6 +17,8 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
         public static StyleRankOptions SSSensoredStormOptions { get; private set; } = null;
         public static StyleRankOptions ULTRAKILLOptions { get; private set; } = null;
 
+        public static ConfigEntry<float> ContactDamageMaxDamage { get; private set; } = null;
+        public static ConfigEntry<float> ContactDamageResetTime { get; private set; } = null;
         public static ConfigEntry<float> WaterHeatingScalar { get; private set; } = null;
         public static ConfigEntry<float> CoolingChamberCoolingRate { get; private set; } = null;
         public static HeatResistanceStageOptions StageOptions2 { get; private set; }
@@ -61,6 +63,9 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
         internal static void Initialize()
         {
+            ContactDamageMaxDamage = Config.Bind("Balance", "ContactDamageMaxDamage", 5.0f);
+            ContactDamageResetTime = Config.Bind("Balance", "ContactDamageResetTime", 0.3f);
+
             DestructiveOptions = new StyleRankOptions(StyleRanks.Destructive, Config, 
                 heatResDrain: -1.0f,
                 heatResRecovery: 100.0f,
