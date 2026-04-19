@@ -69,7 +69,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResExplosiveSizeNormMax: -1.0f,
                 heatResExplosiveDmgScalar: -1.0f,
                 heatResExplosiveDmgPlayer: false,
-                explosiveAttacksHeatResThreshold: 0.0f,
+                explosiveAttacksHeatResThreshold: -40.0f,
                 superExplosiveAttacksHeatResThreshold: -150.0f,
                 revolverTwirlCoolingScalar: 0.3f,
                 superExplosiveAttacksHeatResExplosiveSizeNormMin: 0.0f
@@ -83,7 +83,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResExplosiveSizeNormMax: -1.0f,
                 heatResExplosiveDmgScalar: -1.0f,
                 heatResExplosiveDmgPlayer: false,
-                explosiveAttacksHeatResThreshold: 0.0f,
+                explosiveAttacksHeatResThreshold: -40.0f,
                 superExplosiveAttacksHeatResThreshold: -150.0f,
                 revolverTwirlCoolingScalar: 0.3f,
                 superExplosiveAttacksHeatResExplosiveSizeNormMin: 0.0f
@@ -97,7 +97,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResExplosiveSizeNormMax: -1.0f,
                 heatResExplosiveDmgScalar: -1.0f,
                 heatResExplosiveDmgPlayer: false,
-                explosiveAttacksHeatResThreshold: 10.0f,
+                explosiveAttacksHeatResThreshold: -40.0f,
                 superExplosiveAttacksHeatResThreshold: -150.0f,
                 revolverTwirlCoolingScalar: 0.3f,
                 superExplosiveAttacksHeatResExplosiveSizeNormMin: 0.0f
@@ -111,7 +111,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResExplosiveSizeNormMax: -1.0f,
                 heatResExplosiveDmgScalar: -1.0f,
                 heatResExplosiveDmgPlayer: false,
-                explosiveAttacksHeatResThreshold: 10.0f,
+                explosiveAttacksHeatResThreshold: -40.0f,
                 superExplosiveAttacksHeatResThreshold: -150.0f,
                 revolverTwirlCoolingScalar: 0.3f,
                 superExplosiveAttacksHeatResExplosiveSizeNormMin: 0.0f
@@ -125,7 +125,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResExplosiveSizeNormMax: -1.0f,
                 heatResExplosiveDmgScalar: -1.0f,
                 heatResExplosiveDmgPlayer: false,
-                explosiveAttacksHeatResThreshold: 15.0f,
+                explosiveAttacksHeatResThreshold: -40.0f,
                 superExplosiveAttacksHeatResThreshold: -100.0f,
                 revolverTwirlCoolingScalar: 0.3f,
                 superExplosiveAttacksHeatResExplosiveSizeNormMin: 0.0f
@@ -139,7 +139,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResExplosiveSizeNormMax: 7.0f,
                 heatResExplosiveDmgScalar: 0.35f,
                 heatResExplosiveDmgPlayer: true,
-                explosiveAttacksHeatResThreshold: 15.0f,
+                explosiveAttacksHeatResThreshold: -5.0f,
                 superExplosiveAttacksHeatResThreshold: -50.0f,
                 revolverTwirlCoolingScalar: 0.3f,
                 superExplosiveAttacksHeatResExplosiveSizeNormMin: -1.0f
@@ -153,7 +153,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResExplosiveSizeNormMax: 8.5f,
                 heatResExplosiveDmgScalar: 0.5f,
                 heatResExplosiveDmgPlayer: true,
-                explosiveAttacksHeatResThreshold: 17.5f,
+                explosiveAttacksHeatResThreshold: 5.0f,
                 superExplosiveAttacksHeatResThreshold: -30.0f,
                 revolverTwirlCoolingScalar: 0.25f,
                 superExplosiveAttacksHeatResExplosiveSizeNormMin: -1.0f
@@ -167,7 +167,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResExplosiveSizeNormMax: 6.5f,
                 heatResExplosiveDmgScalar: 0.8f,
                 heatResExplosiveDmgPlayer: true,
-                explosiveAttacksHeatResThreshold: 20.0f,
+                explosiveAttacksHeatResThreshold: 10.0f,
                 superExplosiveAttacksHeatResThreshold: -10.0f,
                 revolverTwirlCoolingScalar: 0.3f,
                 superExplosiveAttacksHeatResExplosiveSizeNormMin: -1.0f
