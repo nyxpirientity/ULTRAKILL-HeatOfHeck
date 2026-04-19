@@ -99,8 +99,9 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             StyleRanks styleRank = Shud.GetStyleRank();
             var options = Options.GetStyleRankOptions(styleRank);
 
+            bool superExplosive = CurrentHeatResistance < options.SuperExplosiveAttacksHeatResThreshold.Value;
             float explosiveSizeBase = options.HeatResExplosiveSizeBase.Value;
-            float explosiveSizeNormMin = options.HeatResExplosiveSizeNormMin.Value;
+            float explosiveSizeNormMin = superExplosive ? options.SuperExplosiveAttacksHeatResExplosiveSizeNormMin.Value : options.HeatResExplosiveSizeNormMin.Value;
             float explosiveSizeNormMax = options.HeatResExplosiveSizeNormMax.Value;
             float explosiveDmgScalar = options.HeatResExplosiveDmgScalar.Value;
             bool explosiveDamagePlayer = options.HeatResExplosiveDmgPlayer.Value;

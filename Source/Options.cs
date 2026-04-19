@@ -70,7 +70,9 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResExplosiveDmgScalar: -1.0f,
                 heatResExplosiveDmgPlayer: false,
                 explosiveAttacksHeatResThreshold: 0.0f,
-                revolverTwirlCoolingScalar: 0.3f
+                superExplosiveAttacksHeatResThreshold: -150.0f,
+                revolverTwirlCoolingScalar: 0.3f,
+                superExplosiveAttacksHeatResExplosiveSizeNormMin: 0.0f
             );
 
             ChaoticOptions = new StyleRankOptions(StyleRanks.Chaotic, Config, 
@@ -82,7 +84,9 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResExplosiveDmgScalar: -1.0f,
                 heatResExplosiveDmgPlayer: false,
                 explosiveAttacksHeatResThreshold: 0.0f,
-                revolverTwirlCoolingScalar: 0.3f
+                superExplosiveAttacksHeatResThreshold: -150.0f,
+                revolverTwirlCoolingScalar: 0.3f,
+                superExplosiveAttacksHeatResExplosiveSizeNormMin: 0.0f
             );
 
             BrutalOptions = new StyleRankOptions(StyleRanks.Brutal, Config, 
@@ -94,7 +98,9 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResExplosiveDmgScalar: -1.0f,
                 heatResExplosiveDmgPlayer: false,
                 explosiveAttacksHeatResThreshold: 10.0f,
-                revolverTwirlCoolingScalar: 0.3f
+                superExplosiveAttacksHeatResThreshold: -150.0f,
+                revolverTwirlCoolingScalar: 0.3f,
+                superExplosiveAttacksHeatResExplosiveSizeNormMin: 0.0f
             );
 
             AnarchicOptions = new StyleRankOptions(StyleRanks.Anarchic, Config, 
@@ -106,7 +112,9 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResExplosiveDmgScalar: -1.0f,
                 heatResExplosiveDmgPlayer: false,
                 explosiveAttacksHeatResThreshold: 10.0f,
-                revolverTwirlCoolingScalar: 0.3f
+                superExplosiveAttacksHeatResThreshold: -150.0f,
+                revolverTwirlCoolingScalar: 0.3f,
+                superExplosiveAttacksHeatResExplosiveSizeNormMin: 0.0f
             );
 
             SupremeOptions = new StyleRankOptions(StyleRanks.Supreme, Config, 
@@ -118,7 +126,9 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResExplosiveDmgScalar: -1.0f,
                 heatResExplosiveDmgPlayer: false,
                 explosiveAttacksHeatResThreshold: 15.0f,
-                revolverTwirlCoolingScalar: 0.3f
+                superExplosiveAttacksHeatResThreshold: -100.0f,
+                revolverTwirlCoolingScalar: 0.3f,
+                superExplosiveAttacksHeatResExplosiveSizeNormMin: 0.0f
             );
 
             SSadisticOptions = new StyleRankOptions(StyleRanks.SSadistic, Config, 
@@ -130,7 +140,9 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResExplosiveDmgScalar: 0.35f,
                 heatResExplosiveDmgPlayer: true,
                 explosiveAttacksHeatResThreshold: 15.0f,
-                revolverTwirlCoolingScalar: 0.3f
+                superExplosiveAttacksHeatResThreshold: -50.0f,
+                revolverTwirlCoolingScalar: 0.3f,
+                superExplosiveAttacksHeatResExplosiveSizeNormMin: -1.0f
             );
 
             SSSensoredStormOptions = new StyleRankOptions(StyleRanks.SSSensoredStorm, Config, 
@@ -142,7 +154,9 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResExplosiveDmgScalar: 0.5f,
                 heatResExplosiveDmgPlayer: true,
                 explosiveAttacksHeatResThreshold: 17.5f,
-                revolverTwirlCoolingScalar: 0.25f
+                superExplosiveAttacksHeatResThreshold: -30.0f,
+                revolverTwirlCoolingScalar: 0.25f,
+                superExplosiveAttacksHeatResExplosiveSizeNormMin: -1.0f
             );
 
             ULTRAKILLOptions = new StyleRankOptions(StyleRanks.ULTRAKILL, Config, 
@@ -154,7 +168,9 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 heatResExplosiveDmgScalar: 0.8f,
                 heatResExplosiveDmgPlayer: true,
                 explosiveAttacksHeatResThreshold: 20.0f,
-                revolverTwirlCoolingScalar: 0.3f
+                superExplosiveAttacksHeatResThreshold: -10.0f,
+                revolverTwirlCoolingScalar: 0.3f,
+                superExplosiveAttacksHeatResExplosiveSizeNormMin: -1.0f
             );
 
             CoolingChamberCoolingRate = Config.Bind("Balance.General", "CoolingChamberCoolingRate", 30.0f);
@@ -172,7 +188,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
     public class StyleRankOptions
     {
-        public StyleRankOptions(StyleRanks styleRank, ConfigFile config, float heatResDrain, float heatResRecovery, float heatResExplosiveSizeBase, float heatResExplosiveSizeNormMin, float heatResExplosiveSizeNormMax, float heatResExplosiveDmgScalar, bool heatResExplosiveDmgPlayer, float explosiveAttacksHeatResThreshold, float revolverTwirlCoolingScalar)
+        public StyleRankOptions(StyleRanks styleRank, ConfigFile config, float heatResDrain, float heatResRecovery, float heatResExplosiveSizeBase, float heatResExplosiveSizeNormMin, float heatResExplosiveSizeNormMax, float heatResExplosiveDmgScalar, bool heatResExplosiveDmgPlayer, float explosiveAttacksHeatResThreshold, float superExplosiveAttacksHeatResThreshold, float superExplosiveAttacksHeatResExplosiveSizeNormMin, float revolverTwirlCoolingScalar)
         {
             string category = $"{styleRank}";
             HeatResDrain = config.Bind(category, "HeatResDrain", heatResDrain);
@@ -185,6 +201,8 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             RevolverCoolingScalar = config.Bind(category, "RevolverTwirlCoolingScalar", revolverTwirlCoolingScalar);
             
             ExplosiveAttacksHeatResThreshold = config.Bind(category, "ExplosiveAttacksHeatResThreshold", explosiveAttacksHeatResThreshold);
+            SuperExplosiveAttacksHeatResThreshold = config.Bind(category, "SuperExplosiveAttacksHeatResThreshold", superExplosiveAttacksHeatResThreshold);
+            SuperExplosiveAttacksHeatResExplosiveSizeNormMin = config.Bind(category, "SuperExplosiveAttacksHeatResExplosiveSizeNormMin", superExplosiveAttacksHeatResExplosiveSizeNormMin);
         }
 
         public ConfigEntry<float> HeatResDrain { get; private set; } = null;
@@ -196,6 +214,8 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
         public ConfigEntry<bool> HeatResExplosiveDmgPlayer { get; private set; } = null;
 
         public ConfigEntry<float> ExplosiveAttacksHeatResThreshold { get; private set; } = null;
+        public ConfigEntry<float> SuperExplosiveAttacksHeatResExplosiveSizeNormMin { get; private set; } = null;
+        public ConfigEntry<float> SuperExplosiveAttacksHeatResThreshold { get; private set; } = null;
         public ConfigEntry<float> RevolverCoolingScalar { get; private set; } = null;
     }
 
