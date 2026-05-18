@@ -10,6 +10,8 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
         internal static void Initialize()
         {
+            LevelQuickLoader.AddQuickLoadLevel("Level 0-E");
+
             NyxLib.Assets.AddAssetPicker<HeatResistance>((hr) =>
             {
                 HeatResistancePrefab = UnityEngine.Object.Instantiate(hr.gameObject.transform.parent.gameObject, null, false);
