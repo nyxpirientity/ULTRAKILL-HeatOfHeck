@@ -155,6 +155,12 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             player = NewMovement.Instance;
             Shud = StyleHUD.Instance;
             Instance = this;
+
+            if (FireObjectPool.Instance == null)
+            {
+                return;
+            }
+
             FireVis = GameObject.Instantiate(FireObjectPool.Instance.firePrefab, transform);
             FireVis.SetActive(false);
             var fireZone = FireVis.GetComponentInChildren<FireZone>();
