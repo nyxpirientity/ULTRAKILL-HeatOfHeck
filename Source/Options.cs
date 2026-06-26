@@ -20,6 +20,8 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
         public static ConfigEntry<float> ContactDamageMaxDamage { get; private set; } = null;
         public static ConfigEntry<float> ContactDamageResetTime { get; private set; } = null;
         public static ConfigEntry<float> WaterHeatingScalar { get; private set; } = null;
+        public static ConfigEntry<string> FlavourText { get; private set; }
+        public static ConfigEntry<bool> ShowFireEffect { get; private set; }
         public static ConfigEntry<float> CoolingChamberCoolingRate { get; private set; } = null;
         public static HeatResistanceStageOptions StageOptions2 { get; private set; }
         public static HeatResistanceStageOptions StageOptions3 { get; private set; }
@@ -32,14 +34,14 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             switch (rank)
             {
                 case StyleRanks.Null:
-                if (nullRank == StyleRanks.Null)
-                {
-                    throw new InvalidEnumArgumentException("Null style rank has no options, and for some reason caller requested null style rank options");
-                }
-                else
-                {
-                    return GetStyleRankOptions(nullRank);
-                }
+                    if (nullRank == StyleRanks.Null)
+                    {
+                        throw new InvalidEnumArgumentException("Null style rank has no options, and for some reason caller requested null style rank options");
+                    }
+                    else
+                    {
+                        return GetStyleRankOptions(nullRank);
+                    }
                 case StyleRanks.Destructive:
                     return DestructiveOptions;
                 case StyleRanks.Chaotic:
@@ -66,7 +68,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             ContactDamageMaxDamage = Config.Bind("Balance", "ContactDamageMaxDamage", 5.0f);
             ContactDamageResetTime = Config.Bind("Balance", "ContactDamageResetTime", 0.3f);
 
-            DestructiveOptions = new StyleRankOptions(StyleRanks.Destructive, Config, 
+            DestructiveOptions = new StyleRankOptions(StyleRanks.Destructive, Config,
                 heatResDrain: -1.0f,
                 heatResRecovery: 100.0f,
                 heatResExplosiveSizeBase: -1.0f,
@@ -80,7 +82,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 superExplosiveAttacksHeatResExplosiveSizeNormMin: 0.0f
             );
 
-            ChaoticOptions = new StyleRankOptions(StyleRanks.Chaotic, Config, 
+            ChaoticOptions = new StyleRankOptions(StyleRanks.Chaotic, Config,
                 heatResDrain: -1.0f,
                 heatResRecovery: 100.0f,
                 heatResExplosiveSizeBase: -1.0f,
@@ -94,7 +96,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 superExplosiveAttacksHeatResExplosiveSizeNormMin: 0.0f
             );
 
-            BrutalOptions = new StyleRankOptions(StyleRanks.Brutal, Config, 
+            BrutalOptions = new StyleRankOptions(StyleRanks.Brutal, Config,
                 heatResDrain: -1.0f,
                 heatResRecovery: 100.0f,
                 heatResExplosiveSizeBase: -1.0f,
@@ -108,7 +110,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 superExplosiveAttacksHeatResExplosiveSizeNormMin: 0.0f
             );
 
-            AnarchicOptions = new StyleRankOptions(StyleRanks.Anarchic, Config, 
+            AnarchicOptions = new StyleRankOptions(StyleRanks.Anarchic, Config,
                 heatResDrain: 30.0f,
                 heatResRecovery: 1.7f,
                 heatResExplosiveSizeBase: -1.0f,
@@ -122,7 +124,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 superExplosiveAttacksHeatResExplosiveSizeNormMin: 0.0f
             );
 
-            SupremeOptions = new StyleRankOptions(StyleRanks.Supreme, Config, 
+            SupremeOptions = new StyleRankOptions(StyleRanks.Supreme, Config,
                 heatResDrain: 60.0f,
                 heatResRecovery: 2.0f,
                 heatResExplosiveSizeBase: -1.0f,
@@ -136,7 +138,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 superExplosiveAttacksHeatResExplosiveSizeNormMin: 0.0f
             );
 
-            SSadisticOptions = new StyleRankOptions(StyleRanks.SSadistic, Config, 
+            SSadisticOptions = new StyleRankOptions(StyleRanks.SSadistic, Config,
                 heatResDrain: 70.0f,
                 heatResRecovery: 2.0f,
                 heatResExplosiveSizeBase: 12.0f,
@@ -150,7 +152,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 superExplosiveAttacksHeatResExplosiveSizeNormMin: -1.0f
             );
 
-            SSSensoredStormOptions = new StyleRankOptions(StyleRanks.SSSensoredStorm, Config, 
+            SSSensoredStormOptions = new StyleRankOptions(StyleRanks.SSSensoredStorm, Config,
                 heatResDrain: 75.0f,
                 heatResRecovery: 2.1f,
                 heatResExplosiveSizeBase: 14.0f,
@@ -164,7 +166,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 superExplosiveAttacksHeatResExplosiveSizeNormMin: -1.0f
             );
 
-            ULTRAKILLOptions = new StyleRankOptions(StyleRanks.ULTRAKILL, Config, 
+            ULTRAKILLOptions = new StyleRankOptions(StyleRanks.ULTRAKILL, Config,
                 heatResDrain: 100.0f,
                 heatResRecovery: 2.4f,
                 heatResExplosiveSizeBase: 20.0f,
@@ -180,14 +182,16 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
             CoolingChamberCoolingRate = Config.Bind("Balance.General", "CoolingChamberCoolingRate", 30.0f);
             WaterHeatingScalar = Config.Bind("Balance.General", "WaterHeatingScalar", 0.7f);
-        
+            FlavourText = Config.Bind("Aesthetics", "FlavourText", "YOU THINK YOU'RE SO GOOD? WELL YOU'D BETTER KEEP MOVING, BLOOD BUCKET");
+            ShowFireEffect = Config.Bind("Aesthetics", "ShowFireEffect", true);
+
             StageOptions4 = new HeatResistanceStageOptions(4, Config, additionalAntiHPGain: 50.0f, threshold: -95.0f, rankDescensionTimerChange: -2.0f, vanillaHeatResSpeedup: 2.0f);
             StageOptions3 = new HeatResistanceStageOptions(3, Config, additionalAntiHPGain: 35.0f, threshold: -50.0f, rankDescensionTimerChange: -1.25f, vanillaHeatResSpeedup: 1.5f);
             StageOptions2 = new HeatResistanceStageOptions(2, Config, additionalAntiHPGain: 10.0f, threshold: 0.0f, rankDescensionTimerChange: -0.5f, vanillaHeatResSpeedup: 1.0f);
             StageOptions1 = new HeatResistanceStageOptions(1, Config, additionalAntiHPGain: 0.0f, threshold: 50.0f, rankDescensionTimerChange: 1.25f, vanillaHeatResSpeedup: null);
             StageOptions0 = new HeatResistanceStageOptions(0, Config, additionalAntiHPGain: 0.0f, threshold: null, rankDescensionTimerChange: 2.0f, vanillaHeatResSpeedup: null);
         }
-        
+
         internal static ConfigFile Config = null;
     }
 
@@ -204,7 +208,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             HeatResExplosiveDmgScalar = config.Bind(category, "HeatResExplosiveDmgScalar", heatResExplosiveDmgScalar);
             HeatResExplosiveDmgPlayer = config.Bind(category, "HeatResExplosiveDmgPlayer", heatResExplosiveDmgPlayer);
             RevolverCoolingScalar = config.Bind(category, "RevolverTwirlCoolingScalar", revolverTwirlCoolingScalar);
-            
+
             ExplosiveAttacksHeatResThreshold = config.Bind(category, "ExplosiveAttacksHeatResThreshold", explosiveAttacksHeatResThreshold);
             SuperExplosiveAttacksHeatResThreshold = config.Bind(category, "SuperExplosiveAttacksHeatResThreshold", superExplosiveAttacksHeatResThreshold);
             SuperExplosiveAttacksHeatResExplosiveSizeNormMin = config.Bind(category, "SuperExplosiveAttacksHeatResExplosiveSizeNormMin", superExplosiveAttacksHeatResExplosiveSizeNormMin);
@@ -229,7 +233,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
         public HeatResistanceStageOptions(int stageNum, ConfigFile config, float? additionalAntiHPGain, float? threshold, float? vanillaHeatResSpeedup, float rankDescensionTimerChange)
         {
             string category = $"HeatResStage{stageNum}";
-            
+
             if (threshold.HasValue)
             {
                 Threshold = config.Bind(category, "StageThreshold", threshold.Value);

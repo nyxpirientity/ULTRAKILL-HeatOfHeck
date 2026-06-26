@@ -34,6 +34,9 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
     public class HeatOfHeck : MonoBehaviour
     {
         public static HeatOfHeck Instance = null;
+
+        public GameObject FireVis { get; private set; }
+
         public static float RevolverTwirlThisUpdate = 0.0f;
         public NewMovement player { get; private set; } = null;
         public StyleHUD Shud { get; private set; } = null;
@@ -49,7 +52,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
         public static HeatResistance OurHeatResistanceStatic = null;
         public static HeatResistance LastEnabledHeatRes { get; set; } = null;
         public static int MonoRegistrarIdx { get; private set; }
-        
+
         internal static void Initialize()
         {
             MonoRegistrarIdx = Heck.MonoRegistrar.Register<HeatOfHeck>();
@@ -66,7 +69,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             {
                 return;
             }
-            
+
             var eid = enemy.Eid;
 
             if (eid.Dead)
@@ -152,6 +155,20 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             player = NewMovement.Instance;
             Shud = StyleHUD.Instance;
             Instance = this;
+            FireVis = GameObject.Instantiate(FireObjectPool.Instance.firePrefab, transform);
+            FireVis.SetActive(false);
+            var fireZone = FireVis.GetComponentInChildren<FireZone>();
+            var fireLookAtCamera = FireVis.GetComponentInChildren<AlwaysLookAtCamera>();
+
+            if (fireZone != null)
+            {
+                Destroy(fireZone);
+            }
+
+            if (fireLookAtCamera != null)
+            {
+                Destroy(fireLookAtCamera);
+            }
         }
 
         protected void OnEnable()
@@ -238,11 +255,11 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                     StainVoxelManager.Instance.TryIgniteAt(player.rb.transform.position);
                 }
             }
-            
+
             //if (OurHeatResistance != null && HeatResistance.Instance != null && HeatResistance.Instance != OurHeatResistance)
             //{
-                //UnityEngine.Object.Destroy(OurHeatResistanceRootGo);
-                //OurHeatResistance = null;
+            //UnityEngine.Object.Destroy(OurHeatResistanceRootGo);
+            //OurHeatResistance = null;
             //}
             if (OurHeatResistance == null)// && HeatResistance.Instance == null)
             {
@@ -253,14 +270,14 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 OurHeatResistance.gameObject.SetActive(false);
                 OurHeatResistanceRootGo.SetActive(true);
                 OurHeatResistanceRootGo.transform.SetAsFirstSibling();
-                
+
                 //OurHeatResistance.gameObject.DebugPrintChildren();
                 OurHeatResistanceFlavourText = OurHeatResistance.gameObject.transform.Find("Flavor Text").gameObject.GetComponent<TextMeshProUGUI>();
                 HeatResLabel = OurHeatResistance.gameObject.transform.Find("Meter/Label").gameObject.GetComponent<TextMeshProUGUI>();
                 HeatResPercentage = OurHeatResistance.gameObject.transform.Find("Meter/Fill Area/Fill/Percentage").gameObject.GetComponent<TextMeshProUGUI>();
                 HeatResFlashingText = OurHeatResistance.gameObject.transform.Find("Warning").gameObject.GetComponent<TextMeshProUGUI>();
 
-                OurHeatResistanceFlavourText.text = "YOU THINK YOU'RE SO GOOD? WELL YOU'D BETTER KEEP MOVING, BLOOD BUCKET";
+                OurHeatResistanceFlavourText.text = Options.FlavourText.Value;
                 FieldPublisher<HeatResistance, GameObject> hurtingSound = new FieldPublisher<HeatResistance, GameObject>(OurHeatResistance, "hurtingSound");
                 FieldPublisher<HeatResistance, Image> screenShatter = new FieldPublisher<HeatResistance, Image>(OurHeatResistance, "screenShatter");
                 ScreenShatterImage = screenShatter.Value;
@@ -273,13 +290,11 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 DefaultHurtingSoundPitch = hurtingSound.Value.GetComponent<AudioSource>().pitch;
                 BasePosition = OurHeatResistance.GetComponent<RectTransform>().anchoredPosition;
                 //BaseScale = OurHeatResistance.transform.localScale; WRONG because it does a scale effect when it enables lol
-                
+
                 //FieldInfo heatResInstanceFI = typeof(MonoSingleton<HeatResistance>).GetField("Instance", BindingFlags.Static | BindingFlags.NonPublic);
                 //heatResInstanceFI.SetValue(null, null);
             }
-            
 
-            
             var styleRankOptions = Options.GetStyleRankOptions(Shud.GetStyleRank());
             float revolverCoolingScalar = 1.0f;
             revolverCoolingScalar = Mathf.Lerp(1.0f, 0.4f, Mathf.Clamp(NyxMath.NormalizeToRange(RevolverTwirlThisUpdate * (GunControl.Instance.dualWieldCount + 1) * styleRankOptions.RevolverCoolingScalar.Value, 0.1f, 3.0f), 0.0f, 1.0f));
@@ -291,7 +306,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
             if (OurHeatResistance != null)
             {
                 FieldPublisher<BossBarManager, Dictionary<int, BossHealthBarTemplate>> bossBars = new FieldPublisher<BossBarManager, Dictionary<int, BossHealthBarTemplate>>(BossBarManager.Instance, "bossBars");
-                
+
                 float pushDownFactor = 0.0f;
 
                 if (bossBars.Value.Count == 1)
@@ -323,7 +338,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
                 if (OurHeatResistance != null && LastEnabledHeatRes != null && LastEnabledHeatRes != OurHeatResistance && (LastEnabledHeatRes.NullInvalid()?.isActiveAndEnabled).GetValueOrDefault(false))
                 {
-                    pushDownFactor += 140.0f;
+                    pushDownFactor += 150.0f;
                     hasHeatResistanceThatsNotUs = true;
                 }
 
@@ -336,12 +351,12 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 {
                     pushDownFactor = Mathf.Max(pushDownFactor, 110.0f);
                 }
-                
+
                 pushDownFactor *= 0.7f;
-                
+
                 var rectTransform = OurHeatResistance.GetComponent<RectTransform>();
                 rectTransform.anchoredPosition = NyxMath.EaseInterpTo(rectTransform.anchoredPosition, BasePosition + Vector2.down * pushDownFactor, 10.0f, Time.fixedDeltaTime);
-                
+
                 float heatResistanceRecovery = player.rb.velocity.magnitude;
 
                 StyleRanks styleRank = Shud.GetStyleRank();
@@ -389,9 +404,9 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
                 FieldPublisher<HeatResistance, float> appliedHeatResistance = new FieldPublisher<HeatResistance, float>(OurHeatResistance, "heatResistance");
                 FieldPublisher<HeatResistance, GameObject> hurtingSound = new FieldPublisher<HeatResistance, GameObject>(OurHeatResistance, "hurtingSound");
-                
+
                 float scaledHeatResistanceDrain = HeatResistanceDrain;
-                
+
                 if (CurrentHeatResistance < -95.0f)
                 {
                     scaledHeatResistanceDrain *= 0.7f;
@@ -403,7 +418,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 else if (CurrentHeatResistance <= 0.0f)
                 {
                     scaledHeatResistanceDrain *= 0.9f;
-                }                
+                }
                 else if (CurrentHeatResistance <= 35.0f)
                 {
                     scaledHeatResistanceDrain *= 1.0f;
@@ -415,7 +430,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 else if (CurrentHeatResistance <= 80.0f)
                 {
                     scaledHeatResistanceDrain *= 1.2f;
-                }             
+                }
                 else if (CurrentHeatResistance <= 100.0f)
                 {
                     scaledHeatResistanceDrain *= 1.3f;
@@ -432,33 +447,33 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 //CurrentHeatResistance = Mathf.MoveTowards(CurrentHeatResistance, 100.0f, (Time.fixedDeltaTime * heatResistanceRecovery));
 
                 appliedHeatResistance.Value = Mathf.Max(CurrentHeatResistance, 0.0f);
-                
+
                 bool otherHeatResEnabled = hasHeatResistanceThatsNotUs && (LastEnabledHeatRes.NullInvalid()?.isActiveAndEnabled).GetValueOrDefault(false);
 
                 if (CurrentHeatResistance < Options.StageOptions4.Threshold.Value)
                 {
                     player.ForceAntiHP((float)Options.StageOptions4.AdditionalAntiHPGain.Value * Time.fixedDeltaTime, silent: true, dontOverwriteHp: false, addToCooldown: true, stopInstaHeal: true);
                     hurtingSound.Value.GetComponent<AudioSource>().pitch = DefaultHurtingSoundPitch + 0.4f + UnityEngine.Random.Range(0.0f, 0.1f);
-                    
+
                     switch (UnityEngine.Random.Range(0, 4))
                     {
                         case 0:
-                        HeatResFlashingText.text = $"S{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}T{(char)UnityEngine.Random.Range(33, 96)}O{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}P{(char)UnityEngine.Random.Range(33, 96)}I{(char)UnityEngine.Random.Range(33, 96)}T";
-                        break;
+                            HeatResFlashingText.text = $"S{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}T{(char)UnityEngine.Random.Range(33, 96)}O{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}P{(char)UnityEngine.Random.Range(33, 96)}I{(char)UnityEngine.Random.Range(33, 96)}T";
+                            break;
                         case 1:
-                        HeatResFlashingText.text = $"I{(char)UnityEngine.Random.Range(33, 96)}T{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}B{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}U{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}RN{(char)UnityEngine.Random.Range(33, 96)}S";
-                        break;
+                            HeatResFlashingText.text = $"I{(char)UnityEngine.Random.Range(33, 96)}T{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}B{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}U{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}RN{(char)UnityEngine.Random.Range(33, 96)}S";
+                            break;
                         case 2:
-                        HeatResFlashingText.text = $"AAAAAAA";
-                        break;
+                            HeatResFlashingText.text = $"AAAAAAA";
+                            break;
                         case 3:
                         default:
-                        HeatResFlashingText.text = $"E{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}R{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}R{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}O{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}R{(char)UnityEngine.Random.Range(33, 96)}";
+                            HeatResFlashingText.text = $"E{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}R{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}R{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}O{(char)UnityEngine.Random.Range(33, 96)}{(char)UnityEngine.Random.Range(33, 96)}R{(char)UnityEngine.Random.Range(33, 96)}";
                             break;
                     }
 
                     HeatResRankDescensionTimer += Time.fixedDeltaTime * Options.StageOptions4.RankDescensionTimerChange.Value;
-                    
+
                     if (otherHeatResEnabled)
                     {
                         var otherHeatRes = LastEnabledHeatRes;
@@ -472,7 +487,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                     hurtingSound.Value.GetComponent<AudioSource>().pitch = DefaultHurtingSoundPitch + 0.1f;
                     HeatResFlashingText.text = "CRITICAL";
                     HeatResRankDescensionTimer += Time.fixedDeltaTime * Options.StageOptions3.RankDescensionTimerChange.Value;
-                    
+
                     if (otherHeatResEnabled)
                     {
                         var otherHeatRes = LastEnabledHeatRes;
@@ -522,17 +537,38 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
         {
             if (!NyxLib.Cheats.IsCheatEnabled(Cheats.HeatOfHeck))
             {
+                FireVis.NullInvalid()?.SetActive(false);
                 return;
             }
 
             if (OurHeatResistance == null)
             {
+                FireVis.NullInvalid()?.SetActive(false);
+                return;
+            }
+
+            if (!OurHeatResistance.gameObject.activeInHierarchy)
+            {
+                FireVis.NullInvalid()?.SetActive(false);
                 return;
             }
 
             float temperature = Mathf.Lerp(60.0f, 140.0f, NyxMath.InverseNormalizeToRange(CurrentHeatResistance, -100.0f, 100.0f));
             HeatResLabel.text = $"INTERNAL TEMPERATURE - {temperature:F1}C";
             HeatResPercentage.text = $"{temperature:F2}C";
+            if (CurrentHeatResistance < 0.0f && Options.ShowFireEffect.Value)
+            {
+                FireVis.SetActive(true);
+                var playerTrans = NewMovement.Instance.gameObject.transform;
+                var cam = CameraController.Instance.cam;
+                var ctrans = cam.transform;
+                FireVis.transform.position = ctrans.position + (ctrans.rotation * ((Vector3.forward * 0.125f) + (Vector3.down * 2.5f)));
+                FireVis.transform.rotation = ctrans.rotation * Quaternion.Euler(0.0f, 180.0f, 0.0f);
+            }
+            else
+            {
+                FireVis.SetActive(false);
+            }
         }
 
         private void PlayerPostHurt(EventMethodCancelInfo cancelInfo, PlayerComponents player, int unprocessedDamage, int processedDamage, bool invincible, float scoreLossMultiplier, bool explosion, bool instablack, float hardDamageMultiplier, bool ignoreInvincibility)
@@ -575,7 +611,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
     {
         public static void Prefix(HeatResistance __instance)
         {
-    
+
         }
 
         public static void Postfix(HeatResistance __instance)
