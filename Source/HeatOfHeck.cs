@@ -116,37 +116,41 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
                 return false;
             }
 
-            if (NyxLib.Assets.ExplosionPrefab == null)
+            if (NyxLib.Assets.Explosions.Normal == null)
             {
                 return false;
             }
 
-            var explosionGo = UnityEngine.Object.Instantiate(NyxLib.Assets.ExplosionPrefab);
-            explosionGo.transform.position = hitPoint;
-            var explosion = explosionGo.GetComponentInChildren<Explosion>();
+            var explosionRoot = NyxLib.Assets.Explosions.Normal.Instantiate(hitPoint, Quaternion.identity);
 
-            explosion.damage = (int)(multiplier * explosiveDmgScalar);
-            explosion.enemy = false;
-            explosion.harmless = explosiveDmgScalar <= 0.0f;
-            explosion.lowQuality = false;
-            explosion.maxSize = explosiveSize;
-            explosion.speed = Mathf.Pow(explosion.maxSize * 0.5f, 1.2f) * 0.095f;
-            explosion.enemyDamageMultiplier = 1.0f;
-            explosion.playerDamageOverride = -1;
-            explosion.ignite = true;
-            explosion.friendlyFire = false;
-            explosion.isFup = false;
-            explosion.hitterWeapon = "";
-            explosion.halved = false;
-            explosion.canHit = explosiveDamagePlayer && !forceDontHitPlayer ? AffectedSubjects.All : AffectedSubjects.EnemiesOnly;
-            explosion.originEnemy = null;
-            explosion.rocketExplosion = false;
-            explosion.toIgnore = new System.Collections.Generic.List<EnemyType>();
-            explosion.ultrabooster = false;
-            explosion.unblockable = false;
-            explosion.electric = false;
+            explosionRoot.SetMaxDamage((int)(multiplier * explosiveDmgScalar));
+            explosionRoot.Enemy = false;
+            if (explosiveDmgScalar <= 0.0f)
+            {
+                explosionRoot.MakeHarmless();
+            }
 
-            explosionGo.SetActive(true);
+            explosionRoot.SetMaxSize(explosiveSize);
+            explosionRoot.SetMaxSpeed(Mathf.Pow(explosionRoot.GetMaxSpeed() * 0.5f, 1.2f) * 0.095f);
+            explosionRoot.SetMaxEnemyDamageMultiplier(1.0f);
+            explosionRoot.SetMaxPlayerDamageOverride(-1);
+
+            explosionRoot.ForEachExplosion((explosion) =>
+            {
+                explosion.ignite = true;
+                explosion.friendlyFire = false;
+                explosion.isFup = false;
+                explosion.hitterWeapon = "";
+                explosion.halved = false;
+                explosion.canHit = explosiveDamagePlayer && !forceDontHitPlayer ? AffectedSubjects.All : AffectedSubjects.EnemiesOnly;
+                explosion.originEnemy = null;
+                explosion.rocketExplosion = false;
+                explosion.toIgnore = new System.Collections.Generic.List<EnemyType>();
+                explosion.ultrabooster = false;
+                explosion.unblockable = false;
+                explosion.electric = false;
+            });
+
             return true;
         }
 

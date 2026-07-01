@@ -12,7 +12,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
         {
             LevelQuickLoader.AddQuickLoadLevel("Level 0-E");
 
-            NyxLib.Assets.AddAssetPicker<HeatResistance>((hr) =>
+            NyxLib.Assets.AssetPickingManager.AddAssetPicker<HeatResistance>((hr) =>
             {
                 HeatResistancePrefab = UnityEngine.Object.Instantiate(hr.gameObject.transform.parent.gameObject, null, false);
                 HeatResistancePrefab.SetActive(false);
@@ -20,7 +20,7 @@ namespace Nyxpiri.ULTRAKILL.HeatOfHeck
 
                 var heatRes = HeatResistancePrefab.gameObject.GetComponentInChildren<HeatResistance>(includeInactive: true);
                 FieldPublisher<HeatResistance, GameObject> hurtingSound = new FieldPublisher<HeatResistance, GameObject>(heatRes, "hurtingSound");
-                HeatResHurtSound = GameObject.Instantiate(hurtingSound.Value); 
+                HeatResHurtSound = GameObject.Instantiate(hurtingSound.Value);
                 UnityEngine.Object.DontDestroyOnLoad(HeatResHurtSound);
 
                 return true;
